@@ -4,8 +4,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define ROTULO_MAX_SIZE 32
-
 #define LD_OPCODE	0x00
 #define ST_OPCODE	0x01
 #define MOVE_OPCODE	0x02
@@ -41,10 +39,6 @@
 
 #define B_OPCODE	0x30
 
-/* Estrutura para guardar instrucoes codificadas
- * Criador: Rafael Sanches
- * Editado por: Rafael Sanches
- */
 typedef struct t_instrucao
 {
 	uint32_t codificada;
@@ -55,19 +49,6 @@ typedef struct t_instrucao
 	int imediato;
 }t_instrucao;
 
-/* Estrutura para guardar rotulos e seus respectivos enderecos no texto do programa
- * Criador: Rafael Sanches
- * Editado por: Rafael Sanches
- */
-typedef struct t_lista_rotulo
-{
-	char rotulo[ROTULO_MAX_SIZE];
-	uint32_t endereco;
-	struct *t_lista_rotulo *prox;
-}t_lista_rotulo;
-
 t_instrucao *decodificar_instrucao(uint32_t codigo); //cria uma nova struct instrucao a partir de uma instrucao codificada
-uint32_t codificar_instrucao(char *instrucao); //codifica uma instrucao em uma linha de codigo em linguagem de montagem
-uint32_t *montar_codigo(char *codigo, t_lista_rotulo *labels); //monta codigo em linguagem de montagem, aplicando analise sintatica e preenchendo tabela de labels (rotulos). Retorna um vetor de instrucoes de 32 bits em codigo de maquina
 
 #endif
