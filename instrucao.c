@@ -25,7 +25,7 @@ t_instrucao *decodificar_instrucao(uint32_t codigo)
 	//FETCH OPERANDOS
 	if(nova->tipo_instrucao == B_OPCODE) //Pega o label
 	{
-		this->imediato = operandos;
+		nova->imediato = operandos;
 	}
 	else //Pega primeiro registrador
 	{
@@ -33,9 +33,9 @@ t_instrucao *decodificar_instrucao(uint32_t codigo)
 		for(i=0;i<21;++i) //shift right 21 vezes
 			aux /= 2;
 
-		this->r_operando1 = aux;
+		nova->r_operando1 = aux;
 	}
-	if() //TODO: INSTRUCOES QUE TENHAM SEGUNDO REGISTRADOR
+	if(1) //TODO: INSTRUCOES QUE TENHAM SEGUNDO REGISTRADOR
 	{
 
 	}
@@ -43,7 +43,7 @@ t_instrucao *decodificar_instrucao(uint32_t codigo)
 	{
 
 	}
-	if() //TODO: INSTRUCOES QUE TENHAM TERCEIRO REGISTRADOR
+	if(1) //TODO: INSTRUCOES QUE TENHAM TERCEIRO REGISTRADOR
 	{
 
 	}

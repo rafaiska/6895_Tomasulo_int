@@ -47,37 +47,37 @@
 #define B_OPCODE	0x30
 
 //Tempos de execucao para cada tipo de instrucao (podem ser modificados pelo usuario)
-uint8_t XTIME_LD = 8;
-uint8_t XTIME_ST = 8;
-uint8_t XTIME_MOVE = 2;
-uint8_t XTIME_NEG = 2;
-uint8_t XTIME_NOT = 2;
-uint8_t XTIME_ADD = 2;
-uint8_t XTIME_SUB = 2;
-uint8_t XTIME_MULT = 4;
-uint8_t XTIME_DIV = 4;
-uint8_t XTIME_AND = 2;
-uint8_t XTIME_OR = 2;
-uint8_t XTIME_SLL = 4;
-uint8_t XTIME_SLR = 4;
-uint8_t XTIME_LI = 4;
-uint8_t XTIME_BEQZ = 4;
-uint8_t XTIME_BNEZ = 4;
-uint8_t XTIME_BGTZ = 4;
-uint8_t XTIME_BLEZ = 4;
-uint8_t XTIME_ADDI = 2;
-uint8_t XTIME_SUBI = 2;
-uint8_t XTIME_MULTI = 4;
-uint8_t XTIME_DIVI = 4;
-uint8_t XTIME_ANDI = 4;
-uint8_t XTIME_ORI = 2;
-uint8_t XTIME_BEQ = 4;
-uint8_t XTIME_BNE = 4;
-uint8_t XTIME_BGT = 4;
-uint8_t XTIME_BGE = 4;
-uint8_t XTIME_BLT = 4;
-uint8_t XTIME_BLE = 4;
-uint8_t XTIME_B = 2;
+uint8_t XTIME_LD;
+uint8_t XTIME_ST;
+uint8_t XTIME_MOVE;
+uint8_t XTIME_NEG;
+uint8_t XTIME_NOT;
+uint8_t XTIME_ADD;
+uint8_t XTIME_SUB;
+uint8_t XTIME_MULT;
+uint8_t XTIME_DIV;
+uint8_t XTIME_AND;
+uint8_t XTIME_OR;
+uint8_t XTIME_SLL;
+uint8_t XTIME_SLR;
+uint8_t XTIME_LI;
+uint8_t XTIME_BEQZ;
+uint8_t XTIME_BNEZ;
+uint8_t XTIME_BGTZ;
+uint8_t XTIME_BLEZ;
+uint8_t XTIME_ADDI;
+uint8_t XTIME_SUBI;
+uint8_t XTIME_MULTI;
+uint8_t XTIME_DIVI;
+uint8_t XTIME_ANDI;
+uint8_t XTIME_ORI;
+uint8_t XTIME_BEQ;
+uint8_t XTIME_BNE;
+uint8_t XTIME_BGT;
+uint8_t XTIME_BGE;
+uint8_t XTIME_BLT;
+uint8_t XTIME_BLE;
+uint8_t XTIME_B;
 
 //Registro de instrucao: utilizado pelo codificador/decodificador
 typedef struct t_instrucao
