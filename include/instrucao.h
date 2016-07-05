@@ -1,11 +1,16 @@
 #ifndef INSTRUCAO_H_
 #define INSTRUCAO_H_
 
+/* Tipos de dados e funcoes para tratar instrucoes
+ * codificadas. 
+ */
+
 #include <stdint.h>
 #include <stdlib.h>
 
-#define ROTULO_MAX_SIZE 32
+#define ROTULO_MAX_SIZE 32 //Maior tamanho admitido para um rotulo em codigo assembly
 
+//INSTRUCTION SET DA ARQUITETURA:
 #define LD_OPCODE	0x00
 #define ST_OPCODE	0x01
 #define MOVE_OPCODE	0x02
@@ -41,10 +46,40 @@
 
 #define B_OPCODE	0x30
 
-/* Estrutura para guardar instrucoes codificadas
- * Criador: Rafael Sanches
- * Editado por: Rafael Sanches
- */
+//Tempos de execucao para cada tipo de instrucao (podem ser modificados pelo usuario)
+uint8_t XTIME_LD = 8;
+uint8_t XTIME_ST = 8;
+uint8_t XTIME_MOVE = 2;
+uint8_t XTIME_NEG = 2;
+uint8_t XTIME_NOT = 2;
+uint8_t XTIME_ADD = 2;
+uint8_t XTIME_SUB = 2;
+uint8_t XTIME_MULT = 4;
+uint8_t XTIME_DIV = 4;
+uint8_t XTIME_AND = 2;
+uint8_t XTIME_OR = 2;
+uint8_t XTIME_SLL = 4;
+uint8_t XTIME_SLR = 4;
+uint8_t XTIME_LI = 4;
+uint8_t XTIME_BEQZ = 4;
+uint8_t XTIME_BNEZ = 4;
+uint8_t XTIME_BGTZ = 4;
+uint8_t XTIME_BLEZ = 4;
+uint8_t XTIME_ADDI = 2;
+uint8_t XTIME_SUBI = 2;
+uint8_t XTIME_MULTI = 4;
+uint8_t XTIME_DIVI = 4;
+uint8_t XTIME_ANDI = 4;
+uint8_t XTIME_ORI = 2;
+uint8_t XTIME_BEQ = 4;
+uint8_t XTIME_BNE = 4;
+uint8_t XTIME_BGT = 4;
+uint8_t XTIME_BGE = 4;
+uint8_t XTIME_BLT = 4;
+uint8_t XTIME_BLE = 4;
+uint8_t XTIME_B = 2;
+
+//Registro de instrucao: utilizado pelo codificador/decodificador
 typedef struct t_instrucao
 {
 	uint32_t codificada;
@@ -55,15 +90,12 @@ typedef struct t_instrucao
 	int imediato;
 }t_instrucao;
 
-/* Estrutura para guardar rotulos e seus respectivos enderecos no texto do programa
- * Criador: Rafael Sanches
- * Editado por: Rafael Sanches
- */
+//Lista de rotulos para um programa em assembly
 typedef struct t_lista_rotulo
 {
 	char rotulo[ROTULO_MAX_SIZE];
 	uint32_t endereco;
-	struct *t_lista_rotulo *prox;
+	struct t_lista_rotulo *prox;
 }t_lista_rotulo;
 
 t_instrucao *decodificar_instrucao(uint32_t codigo); //cria uma nova struct instrucao a partir de uma instrucao codificada

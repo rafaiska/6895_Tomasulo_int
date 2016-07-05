@@ -1,26 +1,17 @@
-#include "tad.h"
+#include "tomasulo.h"
 #include <stdio.h>
 #include <time.h>
 
 int main(int argc, char *argv[])
 {
-	t_lista *teste;
-	int i;
-	t_instrucao *instro;
+	Configurar_Tomasulo(); //Obtem configuracoes da entrada padrao e inicializa os componentes
 
-	srand(time(NULL));
-
-	teste = criar_lista();
-
-	for(i=0; i<10; ++i)
+	while(tomasulo_exit == 0)
 	{
-		instro = malloc(sizeof(t_instrucao));
-		instro->codificada = (uint32_t) rand();
-		inserir_instrucao_lista(teste, instro);
-	}		
-	imprimir_lista(teste);
-	esvaziar_lista(teste);
-	imprimir_lista(teste);
-
+		Atualiza_Clock(); //Altera o sinal de clock de um estado de alta para um de baixa tensao, ou vice-versa.
+		Atualiza_Componentes(); //Atualiza todos os componentes do pipeline.
+	}	
+	
+	Encerrar_Tomasulo(); //Desaloca heap de memoria e componentes alocados para o funcionamento do algoritmo
 	return 0;
 }
