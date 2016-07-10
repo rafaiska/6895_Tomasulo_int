@@ -4,7 +4,13 @@
 
 int main(int argc, char *argv[])
 {
-	Configurar_Tomasulo(); //Obtem configuracoes da entrada padrao e inicializa os componentes
+
+	//Obtem configuracoes da entrada padrao e inicializa os componentes
+	if(Configurar_Tomasulo() != 0)
+	{
+		printf("Erro ao configurar o simulador!\n");
+		return 1;
+	}
 
 	while(tomasulo_exit == 0)
 	{

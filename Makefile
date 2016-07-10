@@ -1,7 +1,7 @@
 DIRINCLUDE=./include
 DIROBJETO=./obj
 CC=gcc
-CFLAGS=-I$(DIRINCLUDE)
+CFLAGS=-I$(DIRINCLUDE) -g
 
 _DEPEND = tad.h instrucao.h estacao_reserva.h cdb.h tomasulo.h buffer.h unidade_funcional.h
 DEPEND = $(patsubst %,$(DIRINCLUDE)/%,$(_DEPEND))

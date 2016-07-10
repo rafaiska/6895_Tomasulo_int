@@ -1,0 +1,48 @@
+ARQUITETURA
+	somador = 10
+	multiplicador = 5
+	divisor = 5
+	busca_de_instrucoes = 12
+	buffer_de_carga = 4
+	buffer_de_escrita = 4
+CICLOS
+	ld = 1
+	st = 1
+	li = 1
+	move = 1
+	beq = 1
+	beqz = 1
+	bne = 1
+	bnez = 1
+	bgt = 1
+	bge = 1
+	bgtz = 1
+	blt = 1
+	ble = 1
+	blez = 1
+	b = 1
+	add = 1
+	addi = 1
+	sub = 1
+	subi = 1
+	mult = 1
+	multi = 1
+	div = 1
+	divi = 1
+	and = 1
+	andi = 1
+	or = 1
+	ori = 1
+	neg = 1
+	not = 1
+	sll = 1
+	slr = 1
+TEXTO
+.data
+	resposta: .int 0
+.text
+	li r0, 2
+	li r1, 2
+	add r2, r1, r0
+	li r0, resposta
+	st r2, r0

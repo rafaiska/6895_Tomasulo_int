@@ -51,6 +51,7 @@ Temporary Items
 # Arquivos de backup do vim
 *~
 *.swp
+*.swo
 
 # Arquivos do CodeBlocks
 *.cbp

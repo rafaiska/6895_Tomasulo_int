@@ -9,6 +9,9 @@
 #include "estacao_reserva.h"
 #include "unidade_funcional.h"
 #include "tad.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 //TIPO ABSTRATO DE DADOS PARA MEMORIA
 typedef struct memoria_t
@@ -55,5 +58,9 @@ int Atualiza_Clock(); //Altera o sinal de clock de um estado de alta para um de 
 int Atualiza_Componentes(); //Atualiza todos os componentes do pipeline, retorna a vazao do pipeline (instrucoes emitidas - instrucoes efetivadas) para o ciclo de clock atual.
 int Configurar_Tomasulo(); //Configura o algoritmo de Tomasulo para valores inseridos na entrada padrao
 void Encerrar_Tomasulo(); //Desaloca heap de memoria e componentes alocados para o funcionamento do algoritmo
+memoria_t *Inicializar_Memoria(uint32_t tamanho); //Inicializa o registro de memoria com o tamanho maximo do heap de memoria indicado (em palavras de 32 bits)
+void Liberar_Memoria(memoria_t **memoria); //Desaloca o heap de memoria e o ponteiro para o registro de memoria
+cdb_t *Inicializar_CDB(uint8_t tamanho_barramento); //Inicializa o Common Data Bus com o mesmo tamanho de barramento para dados, controle e endereco
+int Definir_Arquitetura(char *linha); //Usada por Configurar_Tomasulo() para definir parametros de simulacao (numero de componentes, custo em ciclos de cada operacao) a partir de strings do arquivo de entrada. Retornam 0 em caso de sucesso, 1 em caso de falha
 
 #endif
