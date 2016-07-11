@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define ROTULO_MAX_SIZE 32 //Maior tamanho admitido para um rotulo em codigo assembly
 
@@ -100,9 +101,10 @@ typedef struct lista_rotulo_t
 }lista_rotulo_t;
 
 t_instrucao *Decodificar_Instrucao(uint32_t codigo); //cria uma nova struct instrucao a partir de uma instrucao codificada
-uint32_t Codificar_Instrucao(char *instrucao); //codifica uma instrucao em uma linha de codigo em linguagem de montagem
+uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista); //codifica uma instrucao em uma linha de codigo em linguagem de montagem
 uint32_t *Montar_Codigo(char *codigo, uint32_t *heap, uint32_t tamanho_memoria); //monta codigo em linguagem de montagem, aplicando analise sintatica e preenchendo tabela de labels (rotulos). Retorna um vetor de instrucoes de 32 bits em codigo de maquina
-int Adicionar_Rotulo(lista_rotulo_t **lista, char *nome, uint32_t posicao);
-uint32_t Calcular_Tamanho_Instrucao(char *instrucao);
+int Adicionar_Rotulo(lista_rotulo_t **lista, char *nome, uint32_t posicao); //Adiciona um rotulo em uma lista, com a posicao para a qual ele aponta
+uint32_t Buscar_Rotulo(lista_rotulo_t *lista, char *rotulo); //Busca um rotulo na lista e retorna a posicao para a qual ele aponta
+uint32_t Calcular_Tamanho_Instrucao(char *instrucao); //Calcula o tamanho em bytes de uma instrucao
 
 #endif

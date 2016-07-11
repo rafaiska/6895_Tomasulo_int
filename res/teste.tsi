@@ -45,5 +45,12 @@ TEXTO
 	li r0, 2
 	li r1, 2
 	add r2, r1, r0
+	move r3, r2
+soma4:
+	addi r2, r2, 4
+	subi r3, r3, 1
+	bnez r3, soma4
 	li r0, resposta
 	st r2, r0
+loop:
+	b loop
