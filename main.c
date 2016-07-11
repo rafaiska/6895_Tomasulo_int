@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 	{
 		Atualiza_Clock(); //Altera o sinal de clock de um estado de alta para um de baixa tensao, ou vice-versa.
 		Atualiza_Componentes(); //Atualiza todos os componentes do pipeline.
+		tomasulo_exit = 1;
 	}	
 	
 	Encerrar_Tomasulo(); //Desaloca heap de memoria e componentes alocados para o funcionamento do algoritmo

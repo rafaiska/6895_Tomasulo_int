@@ -61,6 +61,7 @@ void Encerrar_Tomasulo(); //Desaloca heap de memoria e componentes alocados para
 memoria_t *Inicializar_Memoria(uint32_t tamanho); //Inicializa o registro de memoria com o tamanho maximo do heap de memoria indicado (em palavras de 32 bits)
 void Liberar_Memoria(memoria_t **memoria); //Desaloca o heap de memoria e o ponteiro para o registro de memoria
 cdb_t *Inicializar_CDB(uint8_t tamanho_barramento); //Inicializa o Common Data Bus com o mesmo tamanho de barramento para dados, controle e endereco
-int Definir_Arquitetura(char *linha); //Usada por Configurar_Tomasulo() para definir parametros de simulacao (numero de componentes, custo em ciclos de cada operacao) a partir de strings do arquivo de entrada. Retornam 0 em caso de sucesso, 1 em caso de falha
+void Liberar_CDB(cdb_t **cdb); //Desaloca os barramentos e o ponteiro para o registro de barramentos
+int Definir_Arquitetura(char *linha); //Usada por Configurar_Tomasulo() para definir parametros de simulacao (numero de componentes, custo em ciclos de cada operacao) a partir de strings do arquivo de entrada. Retorna 0 em caso de sucesso, 1 em caso de falha
 
 #endif

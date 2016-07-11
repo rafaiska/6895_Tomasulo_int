@@ -40,6 +40,7 @@ CICLOS
 TEXTO
 .data
 	resposta: .int 0
+	testao: .int 4
 .text
 	li r0, 2
 	li r1, 2

@@ -104,6 +104,8 @@ int Configurar_Tomasulo()
 		gets(buffer_leitura);
 	}
 
+	tomasulo_memoria = Inicializar_Memoria(tamanho_mem);
+
 	printf("INICIALIZANDO SIMULADOR!\n");
 	printf("\tNumero de UF somadoras: %d\n", n_uf_soma);	
 	printf("\tNumero de UF multiplicadoras: %d\n", n_uf_mult);
@@ -113,7 +115,6 @@ int Configurar_Tomasulo()
 	printf("\tNumero de buffers de escrita: %d\n", n_buff_store);
 	printf("\tTamanho da memoria virtual: %d kB\n", (tamanho_mem*32)/1024);
 
-	tomasulo_memoria = Inicializar_Memoria(tamanho_mem);
 	tomasulo_registradores = malloc(sizeof(b_registrador_t));
 	tomasulo_er = malloc(sizeof(estacao_reserva_t)*(n_uf_soma+n_uf_mult+n_uf_divi));
 	tomasulo_uf = malloc(sizeof(unidade_funcional_t)*(n_uf_soma+n_uf_mult+n_uf_divi));
@@ -126,16 +127,34 @@ int Configurar_Tomasulo()
 
 void Encerrar_Tomasulo()
 {
-	//TODO: DAR FREE EM TUTO, TUTO, TUTO
+	Liberar_Memoria(&tomasulo_memoria);
+	free(tomasulo_registradores);
+	free(tomasulo_er);
+	free(tomasulo_uf);
+	free(tomasulo_buffer_load);
+	free(tomasulo_buffer_store);
+	Liberar_CDB(&tomasulo_cdb);
 }
 
 memoria_t *Inicializar_Memoria(uint32_t tamanho)
 {
 	memoria_t *retorno;
+	char programa[tamanho*32]; //String para guardar o programa
+	char c;
+	int i=0;
 
 	retorno = malloc(sizeof(memoria_t));
 	retorno->tamanho = tamanho;
 	retorno->heap = malloc(sizeof(uint32_t)*tamanho);
+
+	while((c = getchar()) != EOF)
+	{
+		programa[i] = c;
+		++i;
+	}
+	programa[i] = '\0';
+
+	Montar_Codigo(programa, retorno->heap, retorno->tamanho);
 
 	return retorno;	
 }
@@ -161,6 +180,16 @@ cdb_t *Inicializar_CDB(uint8_t tamanho_barramento)
 	retorno->dados = malloc(sizeof(uint32_t)*tamanho_barramento);
 
 	return retorno;
+}
+
+void Liberar_CDB(cdb_t **cdb)
+{
+	cdb_t *desaloc = *cdb;
+
+	free(desaloc->sinais);
+	free(desaloc->dados);
+
+	free(desaloc);
 }
 
 int Definir_Arquitetura(char *linha)
