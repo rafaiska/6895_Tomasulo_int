@@ -5,24 +5,24 @@
 #include <stdio.h>
 #include "instrucao.h"
 
-typedef struct t_lista_no
+typedef struct lista_no_t
 {
 	struct t_lista_no *anterior;
 	struct t_instrucao *instrucao;
 	struct t_lista_no *proximo;
-}t_lista_no;
+}lista_no_t;
 
-typedef struct t_lista
+typedef struct lista_t
 {
 	struct t_lista_no *primeiro;
 	struct t_lista_no *ultimo;
 	int tamanho;
-}t_lista;
+}lista_t;
 
-t_lista *criar_lista();
-int inserir_instrucao_lista(t_lista *lista, t_instrucao *instrucao);
-int remover_primeira_instrucao(t_lista *lista);
-void imprimir_lista(t_lista *lista);
-void esvaziar_lista(t_lista *lista);
+lista_t *criar_lista();
+int inserir_instrucao_lista(lista_t *lista, instrucao_t *instrucao);
+int remover_primeira_instrucao(lista_t *lista);
+void imprimir_lista(lista_t *lista);
+void esvaziar_lista(lista_t *lista);
 
 #endif

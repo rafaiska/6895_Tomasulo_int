@@ -1,18 +1,18 @@
 #include "tad.h"
 
-t_lista *criar_lista()
+lista_t *criar_lista()
 {
-	t_lista *nova = malloc(sizeof(t_lista));
+	lista_t *nova = malloc(sizeof(lista_t));
 	nova->primeiro = NULL;
 	nova->ultimo = NULL;
 	nova->tamanho = 0;
 	return nova;
 }
 
-int inserir_instrucao_lista(t_lista *lista, t_instrucao *instrucao)
+int inserir_instrucao_lista(lista_t *lista, instrucao_t *instrucao)
 {
-	t_lista_no *novo = malloc(sizeof(t_lista_no));
-	t_lista_no *p = lista->primeiro;
+	lista_no_t *novo = malloc(sizeof(lista_no_t));
+	lista_no_t *p = lista->primeiro;
 
 	if(p == NULL)
 	{
@@ -32,14 +32,14 @@ int inserir_instrucao_lista(t_lista *lista, t_instrucao *instrucao)
 	return lista->tamanho;
 }
 
-void esvaziar_lista(t_lista *lista)
+void esvaziar_lista(lista_t *lista)
 {
 	while(remover_primeira_instrucao(lista) > 0);
 }
 
-int remover_primeira_instrucao(t_lista *lista)
+int remover_primeira_instrucao(lista_t *lista)
 {
-	t_lista_no *d;
+	lista_no_t *d;
 
 	d = lista->primeiro;
 	if(d != NULL)
@@ -60,9 +60,9 @@ int remover_primeira_instrucao(t_lista *lista)
 	return lista->tamanho;
 }
 
-void imprimir_lista(t_lista *lista)
+void imprimir_lista(lista_t *lista)
 {
-	t_lista_no *p;
+	lista_no_t *p;
 	int i=0;
 
 	p = lista->primeiro;

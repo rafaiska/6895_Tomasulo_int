@@ -1,13 +1,13 @@
 #include "instrucao.h"
 
-t_instrucao *Decodificar_Instrucao(uint32_t codigo)
+instrucao_t *Decodificar_Instrucao(uint32_t codigo)
 {
-	t_instrucao *nova;
+	instrucao_t *nova;
 	int aux;
 	int operandos;
 	int i;
 
-	nova = malloc(sizeof(t_instrucao));
+	nova = malloc(sizeof(instrucao_t));
 	nova->codificada = codigo;
 
 	//FETCH OPCODE
@@ -514,12 +514,14 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 	return retorno;
 }
 
-uint32_t *Montar_Codigo(char *codigo, uint32_t *heap, uint32_t tamanho_memoria)
+uint32_t Montar_Codigo(char *codigo, uint32_t *heap, uint32_t tamanho_memoria, uint32_t *text_end)
 {
 	int i, j;
 	char instrucao[128];
 	lista_rotulo_t *lista = NULL;
+	lista_rotulo_t *lista_aux; //usado para liberar memoria
 	uint32_t posicao = 0;
+	uint32_t text_start;
 
 	//FASE1: Percorrer todo o codigo para enumerar as labels
 	i=0;
@@ -535,6 +537,8 @@ uint32_t *Montar_Codigo(char *codigo, uint32_t *heap, uint32_t tamanho_memoria)
 		else if(codigo[i] == '\n')
 		{
 			instrucao[j] = '\0';
+			if(strcmp(".text\0", instrucao) == 0)
+				text_start = posicao;
 			posicao += Calcular_Tamanho_Instrucao(instrucao);
 			j=0;
 		}
@@ -553,6 +557,10 @@ uint32_t *Montar_Codigo(char *codigo, uint32_t *heap, uint32_t tamanho_memoria)
 	{
 		printf("ERRO: Memoria virtual eh muito pequena para o programa\n");
 		exit(1);
+	}
+	else
+	{
+		*text_end = posicao -4;
 	}
 
 	//FASE2: Codificar o programa
@@ -617,8 +625,20 @@ uint32_t *Montar_Codigo(char *codigo, uint32_t *heap, uint32_t tamanho_memoria)
 		}
 	}
 
-	for(i=0; i<20; ++i)
-		printf("0x%x\n", heap[i]);
+	//Para depuracao da memoria
+	//for(i=0; i<20; ++i)
+	//	printf("0x%x\n", heap[i]);
+	//printf("Texto comecando em: 0x%x, terminando em 0x%x\n", text_start, *text_end);
+
+	//Liberar memoria da lista de rotulos
+	while(lista != NULL)
+	{
+		lista_aux = lista;
+		lista = lista->prox;
+		free(lista_aux);
+	}
+
+	return text_start;
 }
 
 int Adicionar_Rotulo(lista_rotulo_t **lista, char *nome, uint32_t posicao)
@@ -662,6 +682,9 @@ uint32_t Calcular_Tamanho_Instrucao(char *instrucao)
 	int j = 0;
 	char aux[32];
 	uint32_t retorno;
+
+	if(strlen(instrucao) == 0)
+		return 0;
 
 	while(instrucao[i] == ' ' || instrucao[i] == '\t')
 		++i;
