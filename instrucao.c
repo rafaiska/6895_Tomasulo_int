@@ -1,58 +1,108 @@
 #include "instrucao.h"
 
-instrucao_t *Decodificar_Instrucao(uint32_t codigo)
+int Decodificar_Instrucao(uint32_t codigo, instrucao_t *destino)
 {
-	instrucao_t *nova;
-	int aux;
-	int operandos;
+	uint32_t opcode;
+	uint32_t op1;
+	uint32_t op2;
+	uint32_t op3;
+	uint32_t operandos;
+	int32_t imediato;
 	int i;
 
-	nova = malloc(sizeof(instrucao_t));
-	nova->codificada = codigo;
+	destino->codificada = codigo;
 
 	//FETCH OPCODE
-	aux = codigo;
+	opcode = codigo;
 	for(i=0; i<26; ++i) //shift right 26 vezes
-		aux /= 2;
+		opcode /= 2;
 
-	nova->tipo_instrucao = aux;
+	destino->tipo_instrucao = opcode;
 
+	operandos = opcode;
 	for(i=0;i<26;++i)
-		aux *= 2;
+		operandos *= 2; //volta os shift right com shift left
 
-	operandos = codigo - aux;
+	operandos = codigo - operandos; //exclui o opcode da instrucao, ficando so com os operandos
 
-	//FETCH OPERANDOS
-	if(nova->tipo_instrucao == B_OPCODE) //Pega o label
-	{
-		nova->imediato = operandos;
-	}
-	else //Pega primeiro registrador
-	{
-		aux = operandos;
-		for(i=0;i<21;++i) //shift right 21 vezes
-			aux /= 2;
+		switch(opcode)
+		{
+			//FORMATO op L
+			case B_OPCODE:
+				destino->imediato = operandos;
+			break;
 
-		nova->r_operando1 = aux;
-	}
-	if(1) //TODO: INSTRUCOES QUE TENHAM SEGUNDO REGISTRADOR
-	{
+			//FORMATO op R, R, I ; FORMATO op R, R, L
+			case ADDI_OPCODE:
+			case SUBI_OPCODE:
+			case MULTI_OPCODE:
+			case DIVI_OPCODE:
+			case ANDI_OPCODE:
+			case ORI_OPCODE:
+			case BEQ_OPCODE:
+			case BNE_OPCODE:
+			case BGT_OPCODE:
+			case BGE_OPCODE:
+			case BLT_OPCODE:
+			case BLE_OPCODE:
+				destino->operando1 = operandos;
+				for(i=0; i<21; ++i) //shift right 21 vezes
+					destino->operando1 /= 2;
+				destino->operando2 = operandos & 0x1f0000;
+				for(i=0; i<16; ++i) //shift right 16 vezes
+					destino->operando2 /= 2;
+				destino->imediato = operandos & 0xffff;
+			break;
 
-	}
-	else
-	{
+			//FORMATO op R, I ; FORMATO op R, L
+			case LI_OPCODE:
+			case BEQZ_OPCODE:
+			case BNEZ_OPCODE:
+			case BGTZ_OPCODE:
+			case BLEZ_OPCODE:
+				destino->operando1 = operandos;
+				for(i=0; i<21; ++i) //shift right 21 vezes
+					destino->operando1 /= 2;
+				destino->imediato = operandos & 0x1fffff;
+			break;
 
-	}
-	if(1) //TODO: INSTRUCOES QUE TENHAM TERCEIRO REGISTRADOR
-	{
+			//FORMATO op R, R
+			case LD_OPCODE:
+			case ST_OPCODE:
+			case MOVE_OPCODE:
+			case NEG_OPCODE:
+			case NOT_OPCODE:
+				destino->operando1 = operandos;
+				for(i=0; i<21; ++i) //shift right 21 vezes
+					destino->operando1 /= 2;
+				destino->operando2 = operandos & 0x1f0000;
+				for(i=0; i<16; ++i) //shift right 16 vezes
+					destino->operando2 /= 2;
+			break;
 
-	}
-	else
-	{
+			//FORMATO op R, R, R
+			case ADD_OPCODE:
+			case SUB_OPCODE:
+			case MULT_OPCODE:
+			case DIV_OPCODE:
+			case AND_OPCODE:
+			case OR_OPCODE:
+			case SLL_OPCODE:
+			case SLR_OPCODE:
+				destino->operando1 = operandos;
+				for(i=0; i<21; ++i) //shift right 21 vezes
+					destino->operando1 /= 2;
+				destino->operando2 = operandos & 0x1f0000;
+				for(i=0; i<16; ++i) //shift right 16 vezes
+					destino->operando2 /= 2;
+				destino->operando3 = operandos & 0xf800;
+				for(i=0; i<11; ++i) //shift right 11 vezes
+					destino->operando3 /= 2;
+			break;
+		}
 
-	}
 
-	return nova;
+	return 0;
 }
 
 uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)

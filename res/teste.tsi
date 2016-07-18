@@ -1,10 +1,10 @@
 ARQUITETURA
-	somador = 10
-	multiplicador = 5
-	divisor = 5
+	somador = 4
+	multiplicador = 2
+	divisor = 2
 	busca_de_instrucoes = 12
-	buffer_de_carga = 4
-	buffer_de_escrita = 4
+	buffer_de_carga = 2
+	buffer_de_escrita = 2
 CICLOS
 	ld = 1
 	st = 1

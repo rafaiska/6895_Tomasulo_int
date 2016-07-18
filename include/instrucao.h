@@ -85,11 +85,11 @@ uint8_t XTIME_B;
 typedef struct instrucao_t
 {
 	uint32_t codificada;
-	int tipo_instrucao;
-	int r_operando1;
-	int r_operando2;
-	int r_operando3;
-	int imediato;
+	uint32_t tipo_instrucao;
+	uint32_t operando1;
+	uint32_t operando2;
+	uint32_t operando3;
+	int32_t imediato;
 }instrucao_t;
 
 //Lista de rotulos para um programa em assembly
@@ -100,7 +100,7 @@ typedef struct lista_rotulo_t
 	struct lista_rotulo_t *prox;
 }lista_rotulo_t;
 
-instrucao_t *Decodificar_Instrucao(uint32_t codigo); //cria uma nova struct instrucao a partir de uma instrucao codificada
+int Decodificar_Instrucao(uint32_t codigo, instrucao_t *destino); //cria uma nova struct instrucao a partir de uma instrucao codificada e grava em *destino. Retorna diferente de zero em caso de erro
 uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista); //codifica uma instrucao em uma linha de codigo em linguagem de montagem
 uint32_t Montar_Codigo(char *codigo, uint32_t *heap, uint32_t tamanho_memoria, uint32_t *text_end); //monta codigo em linguagem de montagem a partir de um programa assembly passado em char *codigo, aplicando analise sintatica e preenchendo tabela de labels (rotulos). O codigo de maquina resultante eh colocado em uint32_t *heap, e o endereco da ultima instrucao eh gravado em uint32_t *text_end
 int Adicionar_Rotulo(lista_rotulo_t **lista, char *nome, uint32_t posicao); //Adiciona um rotulo em uma lista, com a posicao para a qual ele aponta

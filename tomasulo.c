@@ -15,7 +15,7 @@ void Atualizar_Busca()
 {
 	int i, j;
 
-	if(busca_instrucao_stall != 0 && fila_emissao_empty == 0)
+	if(busca_instrucao_stall != 0 || fila_emissao_empty == 0)
 		return;
 
 	j = (tomasulo_registradores->pc)/4;
@@ -26,16 +26,35 @@ void Atualizar_Busca()
 		tomasulo_registradores->pc += 4;
 		if(tomasulo_registradores->pc > tomasulo_memoria->text_end)
 		{
-			tomasulo_exit = 1;
+			busca_instrucao_stall == 1;
 			break;
 		}
 		++j;
 	}
+	busca_instrucao_ready = i+1; //i+1 instrucoes prontas
 }
 
 void Atualizar_Decodificacao()
 {
-	//TODO: Atualiza decodificacao
+	int i;
+
+	if(fila_emissao_empty != 0 && busca_instrucao_ready != 0)
+	{
+		//TODO: Decodificar instrucoes
+		fila_emissao_first = 0;
+
+		for(i=0; i<busca_instrucao_ready; ++i)
+			Decodificar_Instrucao(tomasulo_busca[i], tomasulo_decodificacao +i);
+
+		fila_emissao_last = i;
+
+		fila_emissao_empty = 0;
+		busca_instrucao_ready = 0;
+	}
+	else if(fila_emissao_empty == 0)
+	{
+		//TODO: Tentar emitir para as ER e BUFFERS
+	}
 }
 
 int Atualiza_Componentes()
