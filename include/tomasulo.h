@@ -28,6 +28,7 @@ typedef struct memoria_t
 typedef struct b_registrador_t
 {
 	uint32_t registrador[MAX_REGISTERS]; //registradores
+	uint8_t qi[MAX_REGISTERS]; //numero da unidade que produzira valor para o registrador correspondente
 	uint32_t pc; //program counter
 	uint32_t sp; //stack pointer
 	uint32_t buffer[4]; //buffer para guardar escritas nos registradores
@@ -39,7 +40,21 @@ typedef struct b_registrador_t
 uint8_t clock_state; //Valor 0 = baixa tensao, valor 1 = alta tensao
 uint32_t clock_count; //Conta pulsos de clock desde o inicio
 
-//PONTEIROS DOS COMPONENTES
+/*PONTEIROS DOS COMPONENTES
+ *Os componentes sao alocados conforme as quantidades
+ *indicadas pelo arquivo de entrada (ou valores padroes
+ *do simulador). Nas estacoes de reserva e buffers de store,
+ *os componentes sao referenciados por um indice especial, uma
+ *vez que os numeros de 0 a MAX_REGISTERS-1 sao usados para
+ *referenciar os registradores.
+ *
+ *PROGRAM COUNTER = (MAX_REGISTERS) a (MAX_REGISTERS)
+ *UNIDADES FUNCIONAIS DE SOMA = (MAX_REGISTERS +1) a (MAX_REGISTERS +n_uf_soma)
+ *UNIDADES FUNCIONAIS DE MULT = (MAX_REGISTERS +n_uf_soma +1) a (MAX_REGISTERS +n_uf_soma +n_uf_mult)
+ *UNIDADES FUNCIONAIS DE DIVI = (MAX_REGISTERS +n_uf_soma +n_uf_mult +1) a (MAX_REGISTERS + n_uf_total)
+ *BUFFERS DE LOAD = (MAX_REGISTERS +n_uf_total +1) a (MAX_REGISTERS +n_uf_total +n_buff_load) 
+ *BUFFERS DE STORE = (MAX_REGISTERS +n_uf_total +n_buff_load +1) a (MAX_REGISTERS +n_uf_total +n_buff_load +n_buff_store) 
+ */
 memoria_t *tomasulo_memoria;			//Unidade de memoria
 b_registrador_t *tomasulo_registradores;	//Banco de registradores
 estacao_reserva_t *tomasulo_er;			//Estacoes de reserva
@@ -81,4 +96,6 @@ void Liberar_CDB(cdb_t **cdb); //Desaloca os barramentos e o ponteiro para o reg
 int Definir_Arquitetura(char *linha); //Usada por Configurar_Tomasulo() para definir parametros de simulacao (numero de componentes, custo em ciclos de cada operacao) a partir de strings do arquivo de entrada. Retorna 0 em caso de sucesso, 1 em caso de falha
 void Atualizar_Busca(); //Atualiza a unidade de busca, obtendo novas instrucoes caso nao esteja em stall
 void Atualizar_Decodificacao(); //Atualiza o decodificador e a fila de emissao
+uint8_t Emissao_Buffer(instrucao_t *instrucao, buffer_t *buffer);
+uint8_t Emissao_ER(instrucao_t *instrucao, estacao_reserva_t *er);
 #endif

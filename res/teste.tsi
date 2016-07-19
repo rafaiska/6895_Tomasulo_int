@@ -2,7 +2,7 @@ ARQUITETURA
 	somador = 4
 	multiplicador = 2
 	divisor = 2
-	busca_de_instrucoes = 12
+	busca_de_instrucoes = 4
 	buffer_de_carga = 2
 	buffer_de_escrita = 2
 CICLOS
@@ -42,15 +42,9 @@ TEXTO
 	resposta: .int 0
 	testao: .int 4
 .text
-	li r0, 2
-	li r1, 2
-	add r2, r1, r0
-	move r3, r2
-soma4:
-	addi r2, r2, 4
-	subi r3, r3, 1
-	bnez r3, soma4
-	li r0, resposta
-	st r2, r0
-loop:
-	b loop
+	li r0, 4
+	ld r1, r0
+	li r2, 12
+	add r1, r2, r1
+	li r0, 0
+	st r1, r0

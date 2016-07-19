@@ -8,6 +8,7 @@ int Atualiza_Clock()
 	{
 		clock_state = 0;
 		++clock_count;
+		//printf("CICLO DE CLOCK: %d\n", clock_count);
 	}
 }
 
@@ -22,16 +23,16 @@ void Atualizar_Busca()
 	for(i=0; i< n_busca_ciclo; ++i)
 	{
 		tomasulo_busca[i] = tomasulo_memoria->heap[j];
+		++busca_instrucao_ready;
 		printf("Buscando instrucao: 0x%x na posicao 0x%x\n", tomasulo_busca[i], tomasulo_registradores->pc); 	
 		tomasulo_registradores->pc += 4;
 		if(tomasulo_registradores->pc > tomasulo_memoria->text_end)
 		{
-			busca_instrucao_stall == 1;
+			busca_instrucao_stall = 1;
 			break;
 		}
 		++j;
 	}
-	busca_instrucao_ready = i+1; //i+1 instrucoes prontas
 }
 
 void Atualizar_Decodificacao()
@@ -40,20 +41,117 @@ void Atualizar_Decodificacao()
 
 	if(fila_emissao_empty != 0 && busca_instrucao_ready != 0)
 	{
-		//TODO: Decodificar instrucoes
 		fila_emissao_first = 0;
 
 		for(i=0; i<busca_instrucao_ready; ++i)
+		{
+			printf("Decodificando instrucao 0x%x\n", tomasulo_busca[i]);
 			Decodificar_Instrucao(tomasulo_busca[i], tomasulo_decodificacao +i);
+		}
 
-		fila_emissao_last = i;
+		fila_emissao_last = i-1;
 
 		fila_emissao_empty = 0;
 		busca_instrucao_ready = 0;
 	}
-	else if(fila_emissao_empty == 0)
+	if(fila_emissao_empty == 0)
 	{
-		//TODO: Tentar emitir para as ER e BUFFERS
+		while(fila_emissao_first <= fila_emissao_last)
+		{
+			switch(tomasulo_decodificacao[fila_emissao_first].tipo_instrucao)
+			{
+				//Instrucoes emitidas para BUFFER DE LOAD
+				case LD_OPCODE:
+					for(i=0; i<n_buff_load; ++i)
+						if(tomasulo_buffer_load[i].estado == 0)
+							break;
+					if(i< n_buff_load)
+					{
+						printf("Emitindo instrucao 0x%x para buffer de load no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, i+1);
+						Emissao_Buffer(tomasulo_decodificacao +fila_emissao_first, tomasulo_buffer_load +i);
+						++fila_emissao_first;
+					}
+				break;
+				//Instrucoes emitidas para BUFFER DE STORE
+				case ST_OPCODE:
+					for(i=0; i<n_buff_store; ++i)
+						if(tomasulo_buffer_store[i].estado == 0)
+							break;
+					if(i< n_buff_store)
+					{
+						printf("Emitindo instrucao 0x%x para buffer de store no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, i+1);
+						Emissao_Buffer(tomasulo_decodificacao +fila_emissao_first, tomasulo_buffer_load +i);
+						++fila_emissao_first;
+					}
+				break;
+				//Instrucoes emitidas para ESTACAO DE RESERVA DE ADICAO
+				case B_OPCODE:
+				case ADD_OPCODE:
+				case SUB_OPCODE:
+				case AND_OPCODE:
+				case OR_OPCODE:
+				case LI_OPCODE:
+				case ADDI_OPCODE:
+				case SUBI_OPCODE:
+				case ANDI_OPCODE:
+				case ORI_OPCODE:
+				case BEQ_OPCODE:
+				case BNE_OPCODE:
+				case BGT_OPCODE:
+				case BGE_OPCODE:
+				case BLT_OPCODE:
+				case BLE_OPCODE:
+				case BEQZ_OPCODE:
+				case BNEZ_OPCODE:
+				case BGTZ_OPCODE:
+				case BLEZ_OPCODE:
+				case MOVE_OPCODE:
+				case NEG_OPCODE:
+				case NOT_OPCODE:
+					for(i=0; i<n_uf_soma; ++i)
+						if(tomasulo_er[i].b == 0)
+							break;
+					if(i< n_uf_soma)
+					{
+						printf("Emitindo instrucao 0x%x para estacao de reserva somadora no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, i+1);
+						Emissao_ER(tomasulo_decodificacao +fila_emissao_first, tomasulo_er +i);
+						++fila_emissao_first;
+					}
+				break;
+				//Instrucoes emitidas para ESTACAO DE RESERVA DE MULT
+				case MULT_OPCODE:
+				case MULTI_OPCODE:
+				case SLR_OPCODE:
+					for(i=0; i<n_uf_mult; ++i)
+						if(tomasulo_er[n_uf_soma +i].b == 0)
+							break;
+					if(i< n_uf_mult)
+					{
+						printf("Emitindo instrucao 0x%x para estacao de reserva multiplicadora no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, i+1);
+						Emissao_ER(tomasulo_decodificacao +fila_emissao_first, tomasulo_er +n_uf_soma +i);
+						++fila_emissao_first;
+					}
+				break;
+				//Instrucoes emitidas para ESTACAO DE RESERVA DE DIVI
+				case DIV_OPCODE:
+				case DIVI_OPCODE:
+				case SLL_OPCODE:
+					for(i=0; i<n_uf_divi; ++i)
+						if(tomasulo_er[n_uf_soma +n_uf_mult +i].b == 0)
+							break;
+					if(i< n_uf_divi)
+					{
+						printf("Emitindo instrucao 0x%x para estacao de reserva divisora no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, i+1);
+						Emissao_ER(tomasulo_decodificacao +fila_emissao_first, tomasulo_er +n_uf_soma +n_uf_mult +i);
+						++fila_emissao_first;
+					}
+				break;
+			}
+		}
+		if(fila_emissao_first > fila_emissao_last)
+		{
+			fila_emissao_empty = 1;
+		}
 	}
 }
 
@@ -177,6 +275,20 @@ int Configurar_Tomasulo()
 	tomasulo_cdb = Inicializar_CDB(largura_cdb);
 	tomasulo_busca = malloc(sizeof(uint32_t)*n_busca_ciclo);
 	tomasulo_decodificacao = malloc(sizeof(instrucao_t)*n_busca_ciclo);
+
+	//ZERANDO Qi DO BANCO DE REGISTRADORES
+	for(i=0; i< MAX_REGISTERS; ++i)
+		tomasulo_registradores->qi[i] = 0;
+
+	//DEFININDO ID DAS UNIDADES FUNCIONAIS E DOS BUFFERS
+	for(i=0; i< n_uf_total; ++i)
+		tomasulo_er[i].id = MAX_REGISTERS +1 +i;
+
+	for(i=0; i< n_buff_load; ++i)
+		tomasulo_buffer_load[i].id = MAX_REGISTERS +n_uf_total +1 +i;
+
+	for(i=0; i< n_buff_store; ++i)
+		tomasulo_buffer_store[i].id = MAX_REGISTERS +n_uf_total +n_buff_load +1 +i;
 
 	//DEFININDO VALOR INICIAL DO PROGRAM COUNTER
 	tomasulo_registradores->pc = tomasulo_memoria->text_start;
@@ -378,3 +490,139 @@ int Definir_Arquitetura(char *linha)
 	return 0;
 }
 
+uint8_t Emissao_Buffer(instrucao_t *instrucao, buffer_t *buffer)
+{
+	buffer->tipo = instrucao->tipo_instrucao;
+	switch(buffer->tipo)
+	{
+		case LD_OPCODE:
+			//Verifica se o registrador com o endereco esta pronto	
+			buffer->q2 = tomasulo_registradores->qi[instrucao->operando2];
+			if(buffer->q2 == 0)
+				buffer->v2 = tomasulo_registradores->registrador[instrucao->operando2];
+
+			//Essa unidade produzira valor para o registrador destino
+			tomasulo_registradores->qi[instrucao->operando1] = buffer->id;
+			break;
+				
+		case ST_OPCODE:
+			//Verifica se o registrador com o endereco esta pronto	
+			buffer->q2 = tomasulo_registradores->qi[instrucao->operando2];
+			if(buffer->q2 == 0)
+				buffer->v2 = tomasulo_registradores->registrador[instrucao->operando2];
+
+			//Verifica se o registrador com o valor a ser armazenado esta pronto
+			buffer->q1 = tomasulo_registradores->qi[instrucao->operando1];
+			if(buffer->q1 == 0)
+				buffer->v1 = tomasulo_registradores->registrador[instrucao->operando1];
+			break;
+	}
+	buffer->estado = 1; //Calculando endereco
+	return 0;
+}
+
+uint8_t Emissao_ER(instrucao_t *instrucao, estacao_reserva_t *er)
+{
+	er->tipo = instrucao->tipo_instrucao;
+	switch(er->tipo)
+	{
+		//INSTRUCOES DE SALTO op R, I/L 
+		case BEQZ_OPCODE:
+		case BNEZ_OPCODE:
+		case BGTZ_OPCODE:
+		case BLEZ_OPCODE:
+			//Entra em stall ateh decidir se o salto foi tomado ou nao
+			busca_instrucao_stall = 1;
+	
+			er->a = instrucao->imediato;
+	
+			//Verifica se o primeiro operando ja esta pronto. Senao, guarda a ER em que ele sera produzido 
+			er->q1 = tomasulo_registradores->qi[instrucao->operando1];
+			if(er->q1 == 0)
+				er->v1 = tomasulo_registradores->registrador[instrucao->operando1];
+		break;
+		//INSTRUCOES DE SALTO op R, R, I/L
+		case BEQ_OPCODE:
+		case BNE_OPCODE:
+		case BGT_OPCODE:
+		case BGE_OPCODE:
+		case BLT_OPCODE:
+		case BLE_OPCODE:
+			//Entra em stall ateh decidir se o salto foi tomado ou nao
+			busca_instrucao_stall = 1;
+
+			er->a = instrucao->imediato;
+			
+			//Verifica se o primeiro operando ja esta pronto. Senao, guarda a ER em que ele sera produzido 
+			er->q1 = tomasulo_registradores->qi[instrucao->operando1];
+			if(er->q1 == 0)
+				er->v1 = tomasulo_registradores->registrador[instrucao->operando1];
+
+			//Verifica se o segundo operando ja esta pronto. Senao, guarda a ER em que ele sera produzido 
+			er->q2 = tomasulo_registradores->qi[instrucao->operando2];
+			if(er->q2 == 0)
+				er->v2 = tomasulo_registradores->registrador[instrucao->operando2];
+		break;
+		//INSTRUCOES op R, I/L
+		case LI_OPCODE:
+			er->q1 = 0;
+			er->v1 = instrucao->imediato;	
+			//Essa unidade produzira valor para o registrador destino
+			tomasulo_registradores->qi[instrucao->operando1] = er->id;
+		break;
+		//INSTRUCOES op R, R, I/L
+		case ADDI_OPCODE:
+		case SUBI_OPCODE:
+		case MULTI_OPCODE:
+		case DIVI_OPCODE:
+		case ORI_OPCODE:
+		case ANDI_OPCODE:
+			//Verifica se o segundo operando ja esta pronto. Senao, guarda a ER em que ele sera produzido 
+			er->q1 = tomasulo_registradores->qi[instrucao->operando2];
+			if(er->q1 == 0)
+				er->v1 = tomasulo_registradores->registrador[instrucao->operando2];
+
+			er->q2 = 0;
+			er->v2 = instrucao->imediato;	
+
+			//Essa unidade produzira valor para o registrador destino
+			tomasulo_registradores->qi[instrucao->operando1] = er->id;
+		break;
+		//INSTRUCOES op R, R, R
+		case ADD_OPCODE:
+		case SUB_OPCODE:
+		case AND_OPCODE:
+		case OR_OPCODE:
+		case MULT_OPCODE:
+		case DIV_OPCODE:
+		case SLL_OPCODE:
+		case SLR_OPCODE:
+			//Verifica se o segundo operando ja esta pronto. Senao, guarda a ER em que ele sera produzido 
+			er->q1 = tomasulo_registradores->qi[instrucao->operando2];
+			if(er->q1 == 0)
+				er->v1 = tomasulo_registradores->registrador[instrucao->operando2];
+
+			//Verifica se o terceiro operando ja esta pronto. Senao, guarda a ER em que ele sera produzido 
+			er->q2 = tomasulo_registradores->qi[instrucao->operando3];
+			if(er->q2 == 0)
+				er->v2 = tomasulo_registradores->registrador[instrucao->operando3];
+
+			//Essa unidade produzira valor para o registrador destino
+			tomasulo_registradores->qi[instrucao->operando1] = er->id;
+		break;
+		//INSTRUCOES op R, R
+		case MOVE_OPCODE:
+		case NEG_OPCODE:
+		case NOT_OPCODE:
+			//Verifica se o segundo operando ja esta pronto. Senao, guarda a ER em que ele sera produzido 
+			er->q1 = tomasulo_registradores->qi[instrucao->operando2];
+			if(er->q1 == 0)
+				er->v1 = tomasulo_registradores->registrador[instrucao->operando2];
+
+			//Essa unidade produzira valor para o registrador destino
+			tomasulo_registradores->qi[instrucao->operando1] = er->id;
+			break;
+	}
+	er->b = 1;
+	return 0;
+}

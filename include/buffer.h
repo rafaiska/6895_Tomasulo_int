@@ -12,11 +12,13 @@
 
 typedef struct buffer_t
 {
-	uint8_t tipo_buffer; //0 para buffer de LOAD, 1 para buffer de STORE
+	uint8_t id; //id para referenciar essa unidade
 	uint8_t estado; //0 = livre, 1 = calculando endereco, 2 = pronta para acessar memoria
-	uint8_t tipo_instrucao; //Pode ser LD (0x00), ST (0x01) ou LI (0x10)
-	uint8_t registrador; //registrador destino para operacoes de LOAD, origem para operacoes STORE. Pode referenciar uma estacao de reserva, no caso de STORE
-	uint32_t endereco; //endereco de memoria
+	uint8_t tipo; //Pode ser LD (0x00), ST (0x01) ou LI (0x10)
+	int32_t v1; //Valor a ser escrito/lido
+	int32_t v2; //Endereco da leitura/escrita
+	uint8_t q1; //Unidade que produzira o valor a ser escrito (para operacoes STORE)
+	uint8_t q2; //Unidade que produzira o valor de endereco para E/L
 }buffer_t;
 
 #endif
