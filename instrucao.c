@@ -232,70 +232,13 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				retorno = retorno | op1;
 			break;
 
-			//FORMATO op R, R, I
+			//FORMATO op R, R, L/I
 			case ADDI_OPCODE:
 			case SUBI_OPCODE:
 			case MULTI_OPCODE:
 			case DIVI_OPCODE:
 			case ANDI_OPCODE:
 			case ORI_OPCODE:
-				if(instrucao[i] != 'r')
-				{
-					printf("ERRO DE SINTAXE no primeiro operando de: %s\n", instrucao);
-					exit(1);
-				}
-				++i;
-				while(instrucao[i] != ',')
-				{
-					aux[j] = instrucao[i];
-					++j;
-					++i;
-				}
-				aux[j] = '\0';
-				op1 = atoi(aux);
-				++i;
-
-				j=0;
-				while(instrucao[i] == ' ' || instrucao[i] == '\t') ++i;
-
-				if(instrucao[i] != 'r')
-				{
-					printf("ERRO DE SINTAXE no segundo operando de: %s\n", instrucao);
-					exit(1);
-				}
-				++i;
-				while(instrucao[i] != ',')
-				{
-					aux[j] = instrucao[i];
-					++j;
-					++i;
-				}
-				aux[j] = '\0';
-				op2 = atoi(aux);
-				++i;
-				
-				j=0;
-				while(instrucao[i] == ' ' || instrucao[i] == '\t') ++i;
-
-				while(instrucao[i] != '\0')
-				{
-					aux[j] = instrucao[i];
-					++j;
-					++i;
-				}
-				aux[j] = '\0';
-				op3 = atoi(aux);
-
-				for(k=0; k<21; ++k)
-					op1 *= 2;
-
-				for(k=0; k<16; ++k)
-					op2 *= 2;
-
-				retorno = retorno | op1 | op2 | op3;
-			break;
-
-			//FORMATO op R, R, L
 			case BEQ_OPCODE:
 			case BNE_OPCODE:
 			case BGT_OPCODE:
@@ -348,7 +291,11 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				}
 				aux[j] = '\0';
 
-				op3 = Buscar_Rotulo(lista, aux);
+				if(aux[0] >= 48 && aux[0] <= 57)		//op3 eh um imediato
+					op3 = atoi(aux);
+				else						//op3 eh um label
+					op3 = Buscar_Rotulo(lista, aux);
+					
 
 				for(k=0; k<21; ++k)
 					op1 *= 2;
@@ -359,43 +306,8 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				retorno = retorno | op1 | op2 | op3;
 			break;
 
-			//FORMATO op R, I
+			//FORMATO op R, I/L
 			case LI_OPCODE:
-				if(instrucao[i] != 'r')
-				{
-					printf("ERRO DE SINTAXE no primeiro operando de: %s\n", instrucao);
-					exit(1);
-				}
-				++i;
-				while(instrucao[i] != ',')
-				{
-					aux[j] = instrucao[i];
-					++j;
-					++i;
-				}
-				aux[j] = '\0';
-				op1 = atoi(aux);
-				++i;
-				
-				j=0;
-				while(instrucao[i] == ' ' || instrucao[i] == '\t') ++i;
-
-				while(instrucao[i] != '\0')
-				{
-					aux[j] = instrucao[i];
-					++j;
-					++i;
-				}
-				aux[j] = '\0';
-				op2 = atoi(aux);
-
-				for(k=0; k<21; ++k)
-					op1 *= 2;
-
-				retorno = retorno | op1 | op2;
-			break;
-
-			//FORMATO op R, L
 			case BEQZ_OPCODE:
 			case BNEZ_OPCODE:
 			case BGTZ_OPCODE:
@@ -427,7 +339,10 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				}
 				aux[j] = '\0';
 
-				op2 = Buscar_Rotulo(lista, aux);
+				if(aux[0] >= 48 && aux[0] <= 57)		//op2 eh um imediato
+					op2 = atoi(aux);
+				else						//op2 eh um label
+					op2 = Buscar_Rotulo(lista, aux);
 
 				for(k=0; k<21; ++k)
 					op1 *= 2;

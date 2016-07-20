@@ -42,9 +42,9 @@ TEXTO
 	resposta: .int 0
 	testao: .int 4
 .text
-	li r0, 4
+	li r0, testao
 	ld r1, r0
 	li r2, 12
 	add r1, r2, r1
-	li r0, 0
+	li r0, resposta
 	st r1, r0
