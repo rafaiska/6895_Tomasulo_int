@@ -6,37 +6,37 @@ ARQUITETURA
 	buffer_de_carga = 2
 	buffer_de_escrita = 2
 CICLOS
-	ld = 1
-	st = 1
+	ld = 4
+	st = 4
 	li = 1
 	move = 1
-	beq = 1
-	beqz = 1
-	bne = 1
-	bnez = 1
-	bgt = 1
-	bge = 1
-	bgtz = 1
-	blt = 1
-	ble = 1
-	blez = 1
+	beq = 2
+	beqz = 2
+	bne = 2
+	bnez = 2
+	bgt = 2
+	bge = 2
+	bgtz = 2
+	blt = 2
+	ble = 2
+	blez = 2
 	b = 1
-	add = 1
-	addi = 1
-	sub = 1
-	subi = 1
-	mult = 1
-	multi = 1
-	div = 1
-	divi = 1
-	and = 1
-	andi = 1
-	or = 1
-	ori = 1
-	neg = 1
-	not = 1
-	sll = 1
-	slr = 1
+	add = 2
+	addi = 2
+	sub = 2
+	subi = 2
+	mult = 4
+	multi = 4
+	div = 4
+	divi = 4
+	and = 2
+	andi = 2
+	or = 2
+	ori = 2
+	neg = 2
+	not = 2
+	sll = 3
+	slr = 3
 TEXTO
 .data
 	resposta: .int 0
@@ -44,7 +44,13 @@ TEXTO
 .text
 	li r0, testao
 	ld r1, r0
+	li r3, 10
 	li r2, 12
+loop:
 	add r1, r2, r1
+	subi r3, r3, 1
+	beqz r3, fim
+	b loop
+fim: 
 	li r0, resposta
 	st r1, r0

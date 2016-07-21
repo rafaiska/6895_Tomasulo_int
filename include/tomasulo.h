@@ -77,6 +77,7 @@ uint8_t tomasulo_exit;			//Indica fim da simulacao quando diferente de zero
 
 //VARIAVEIS DA UNIDADE DE BUSCA E DECODIFICACAO
 uint8_t busca_instrucao_stall;		//Indica stall na busca de instrucao quando diferente de zero
+uint8_t emissao_instrucao_stall;	//Indica stall na emissao de instrucoes quando diferente de zero
 uint8_t busca_instrucao_ready;		//Caso seja diferente de zero, instrucoes foram buscadas e estao prontas para serem emitidas
 uint8_t fila_emissao_first;		//Primeira instrucao para ser emitida no vetor *tomasulo_decodificacao
 uint8_t fila_emissao_last;		//Ultima instrucao de *tomasulo_decodificacao. Se fila_emissao_first == fila_emissao_last, entao a ultima instrucao da unidade estah sendo emitida, e o buscador pode alcancar mais instrucoes na memoria apos essa emissao
@@ -103,9 +104,9 @@ void Liberar_CDB(cdb_t **cdb); //Desaloca os barramentos e o ponteiro para o reg
 int Definir_Arquitetura(char *linha); //Usada por Configurar_Tomasulo() para definir parametros de simulacao (numero de componentes, custo em ciclos de cada operacao) a partir de strings do arquivo de entrada. Retorna 0 em caso de sucesso, 1 em caso de falha
 void Atualizar_Busca(); //Atualiza a unidade de busca, obtendo novas instrucoes caso nao esteja em stall
 void Atualizar_Decodificacao(); //Atualiza o decodificador e a fila de emissao
-uint8_t Emissao_Buffer(instrucao_t *instrucao, buffer_t *buffer);
-uint8_t Emissao_ER(instrucao_t *instrucao, estacao_reserva_t *er);
-void Atualizar_Memoria();
-void Atualizar_CDB();
-void Checar_Tomasulo_Fim();
+uint8_t Emissao_Buffer(instrucao_t *instrucao, buffer_t *buffer); //Emite instrucao para um buffer de load/store
+uint8_t Emissao_ER(instrucao_t *instrucao, estacao_reserva_t *er); //Emite instrucao para uma estacao de reserva
+void Atualizar_Memoria(); //Processa leituras e escritas na memoria, emite ao CDB quando estao prontas
+void Atualizar_CDB(); //Captura sinais de broadcast do CDB e os transmite aas estacoes de reserva, buffers e banco de registradores
+void Checar_Tomasulo_Fim(); //Verifica se o programa terminou sua execucao
 #endif

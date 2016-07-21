@@ -10,7 +10,9 @@ _OBJETO = main.o instrucao.o estacao_reserva.o cdb.o tomasulo.o buffer.o unidade
 OBJETO = $(patsubst %,$(DIROBJETO)/%,$(_OBJETO))
 
 $(DIROBJETO)/%.o: %.c $(DEPEND)
+	@mkdir -p obj
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 tomasulo.out: $(OBJETO)
+	@mkdir -p bin
 	$(CC) -o ./bin/$@ $^ $(CFLAGS)

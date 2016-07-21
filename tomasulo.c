@@ -37,7 +37,7 @@ void Atualizar_Busca()
 
 void Atualizar_Decodificacao()
 {
-	int i;
+	int i, perigo_estrutural;
 
 	if(fila_emissao_empty != 0 && busca_instrucao_ready != 0)
 	{
@@ -54,9 +54,10 @@ void Atualizar_Decodificacao()
 		fila_emissao_empty = 0;
 		busca_instrucao_ready = 0;
 	}
-	if(fila_emissao_empty == 0)
+	else if(fila_emissao_empty == 0 && emissao_instrucao_stall == 0)
 	{
-		while(fila_emissao_first <= fila_emissao_last)
+		perigo_estrutural = 0;
+		while(fila_emissao_first <= fila_emissao_last && perigo_estrutural == 0)
 		{
 			switch(tomasulo_decodificacao[fila_emissao_first].tipo_instrucao)
 			{
@@ -71,6 +72,8 @@ void Atualizar_Decodificacao()
 						Emissao_Buffer(tomasulo_decodificacao +fila_emissao_first, tomasulo_buffer_load +i);
 						++fila_emissao_first;
 					}
+					else
+						perigo_estrutural = 1;
 				break;
 				//Instrucoes emitidas para BUFFER DE STORE
 				case ST_OPCODE:
@@ -83,6 +86,8 @@ void Atualizar_Decodificacao()
 						Emissao_Buffer(tomasulo_decodificacao +fila_emissao_first, tomasulo_buffer_store +i);
 						++fila_emissao_first;
 					}
+					else
+						perigo_estrutural = 1;
 				break;
 				//Instrucoes emitidas para ESTACAO DE RESERVA DE ADICAO
 				case B_OPCODE:
@@ -117,6 +122,8 @@ void Atualizar_Decodificacao()
 						Emissao_ER(tomasulo_decodificacao +fila_emissao_first, tomasulo_er +i);
 						++fila_emissao_first;
 					}
+					else
+						perigo_estrutural = 1;
 				break;
 				//Instrucoes emitidas para ESTACAO DE RESERVA DE MULT
 				case MULT_OPCODE:
@@ -131,6 +138,8 @@ void Atualizar_Decodificacao()
 						Emissao_ER(tomasulo_decodificacao +fila_emissao_first, tomasulo_er +n_uf_soma +i);
 						++fila_emissao_first;
 					}
+					else
+						perigo_estrutural = 1;
 				break;
 				//Instrucoes emitidas para ESTACAO DE RESERVA DE DIVI
 				case DIV_OPCODE:
@@ -145,6 +154,8 @@ void Atualizar_Decodificacao()
 						Emissao_ER(tomasulo_decodificacao +fila_emissao_first, tomasulo_er +n_uf_soma +n_uf_mult +i);
 						++fila_emissao_first;
 					}
+					else
+						perigo_estrutural = 1;
 				break;
 			}
 		}
@@ -158,10 +169,10 @@ void Atualizar_Decodificacao()
 int Atualiza_Componentes()
 {
 	int i;
-	Atualizar_CDB();
 	Atualizar_Memoria();
 	for(i=0; i< n_uf_total; ++i)
 		Atualizar_Unidade_Funcional(clock_state, tomasulo_uf +i);
+	Atualizar_CDB();
 	Atualizar_Decodificacao();
 	Atualizar_Busca();
 	Checar_Tomasulo_Fim();
@@ -312,9 +323,10 @@ int Configurar_Tomasulo()
 	//DEFININDO VALOR INICIAL DO PROGRAM COUNTER
 	tomasulo_registradores->pc = tomasulo_memoria->text_start;
 
-	//LIBERANDO STALL DA BUSCA, BUSCA AINDA NAO REALIZADA
+	//LIBERANDO STALL DA BUSCA E EMISSAO, BUSCA AINDA NAO REALIZADA
 	busca_instrucao_stall = 0;
 	busca_instrucao_ready = 0;
+	emissao_instrucao_stall = 0;
 
 	//FILA DE EMISSAO INICIALMENTE VAZIA
 	fila_emissao_empty = 1;
@@ -551,6 +563,7 @@ uint8_t Emissao_ER(instrucao_t *instrucao, estacao_reserva_t *er)
 		case BLEZ_OPCODE:
 			//Entra em stall ateh decidir se o salto foi tomado ou nao
 			busca_instrucao_stall = 1;
+			emissao_instrucao_stall = 1;
 	
 			er->a = instrucao->imediato;
 	
@@ -568,6 +581,7 @@ uint8_t Emissao_ER(instrucao_t *instrucao, estacao_reserva_t *er)
 		case BLE_OPCODE:
 			//Entra em stall ateh decidir se o salto foi tomado ou nao
 			busca_instrucao_stall = 1;
+			emissao_instrucao_stall = 1;
 
 			er->a = instrucao->imediato;
 			
@@ -748,12 +762,15 @@ void Atualizar_CDB()
 			break;
 		case SINAL_SALTO_TAKEN:
 			tomasulo_registradores->pc = tomasulo_cdb->dados;
+			printf("Saltando para o endereco 0x%x\n", tomasulo_registradores->pc);
 			fila_emissao_empty = 1;
 			busca_instrucao_stall = 0;
+			emissao_instrucao_stall = 0;
 			tomasulo_cdb->sinal = SINAL_NO_SIGNAL;
 			break;
 		case SINAL_SALTO_NOTTAKEN:
 			busca_instrucao_stall = 0;
+			emissao_instrucao_stall = 0;
 			tomasulo_cdb->sinal = SINAL_NO_SIGNAL;
 			break;
 	}
