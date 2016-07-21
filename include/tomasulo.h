@@ -16,22 +16,29 @@
 //TIPO ABSTRATO DE DADOS PARA MEMORIA
 typedef struct memoria_t
 {
-	uint8_t status; //especifica se a unidade de memoria esta livre (valor zero) ou ocupada (valor diferente de zero).
 	uint32_t tamanho; //tamanho do heap de memoria do programa
 	uint32_t *heap;
 	uint32_t text_start; //posicao de inicio da area de texto
 	uint32_t text_end; //posicao de fim da area de texto
+
+	//Os atributos a seguir sao para acesso da memoria pelos buffers de E/L
+	uint8_t buffer_req; //Buffer que solicitou a operacao
+	uint32_t tipo; //Tipo de instrucao
+	int32_t resultado; //Valor a ser lido/escrito
+	uint32_t endereco_acessado; //Endereco de memoria a ser lido/escrito
+	uint8_t estado; //0 = livre, 1 = busy, 2 = pronto
+	uint8_t tempo; //para cronometrar o tempo de execucao da operacao
 }memoria_t;
 
 //TIPO ABSTRATO DE DADOS PARA BANCO DE REGISTRADORES
 //Eh possivel efetivar 3 instrucoes por ciclo
 typedef struct b_registrador_t
 {
-	uint32_t registrador[MAX_REGISTERS]; //registradores
+	int32_t registrador[MAX_REGISTERS]; //registradores
 	uint8_t qi[MAX_REGISTERS]; //numero da unidade que produzira valor para o registrador correspondente
 	uint32_t pc; //program counter
 	uint32_t sp; //stack pointer
-	uint32_t buffer[4]; //buffer para guardar escritas nos registradores
+	int32_t buffer[4]; //buffer para guardar escritas nos registradores
 	int8_t buffer_endereco[4]; //endereco das escritas, -1 para NULL
 	cdb_t *cdb;
 }b_registrador_t;
@@ -98,4 +105,7 @@ void Atualizar_Busca(); //Atualiza a unidade de busca, obtendo novas instrucoes 
 void Atualizar_Decodificacao(); //Atualiza o decodificador e a fila de emissao
 uint8_t Emissao_Buffer(instrucao_t *instrucao, buffer_t *buffer);
 uint8_t Emissao_ER(instrucao_t *instrucao, estacao_reserva_t *er);
+void Atualizar_Memoria();
+void Atualizar_CDB();
+void Checar_Tomasulo_Fim();
 #endif

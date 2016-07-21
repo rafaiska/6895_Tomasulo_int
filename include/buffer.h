@@ -20,5 +20,7 @@ typedef struct buffer_t
 	uint8_t q1; //Unidade que produzira o valor a ser escrito (para operacoes STORE)
 	uint8_t q2; //Unidade que produzira o valor de endereco para E/L
 }buffer_t;
+			
+void Buffer_Sinal_Pronto(buffer_t *buffer, uint8_t n_buffer, uint8_t produtor, int32_t dados);
 
 #endif

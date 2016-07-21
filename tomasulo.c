@@ -8,7 +8,7 @@ int Atualiza_Clock()
 	{
 		clock_state = 0;
 		++clock_count;
-		//printf("CICLO DE CLOCK: %d\n", clock_count);
+		printf("\tCICLO DE CLOCK: %d\n", clock_count);
 	}
 }
 
@@ -67,7 +67,7 @@ void Atualizar_Decodificacao()
 							break;
 					if(i< n_buff_load)
 					{
-						printf("Emitindo instrucao 0x%x para buffer de load no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, i+1);
+						printf("Emitindo instrucao 0x%x para buffer de load no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, tomasulo_buffer_load[i].id);
 						Emissao_Buffer(tomasulo_decodificacao +fila_emissao_first, tomasulo_buffer_load +i);
 						++fila_emissao_first;
 					}
@@ -79,8 +79,8 @@ void Atualizar_Decodificacao()
 							break;
 					if(i< n_buff_store)
 					{
-						printf("Emitindo instrucao 0x%x para buffer de store no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, i+1);
-						Emissao_Buffer(tomasulo_decodificacao +fila_emissao_first, tomasulo_buffer_load +i);
+						printf("Emitindo instrucao 0x%x para buffer de store no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, tomasulo_buffer_store[i].id);
+						Emissao_Buffer(tomasulo_decodificacao +fila_emissao_first, tomasulo_buffer_store +i);
 						++fila_emissao_first;
 					}
 				break;
@@ -113,7 +113,7 @@ void Atualizar_Decodificacao()
 							break;
 					if(i< n_uf_soma)
 					{
-						printf("Emitindo instrucao 0x%x para estacao de reserva somadora no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, i+1);
+						printf("Emitindo instrucao 0x%x para estacao de reserva somadora no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, tomasulo_er[i].id);
 						Emissao_ER(tomasulo_decodificacao +fila_emissao_first, tomasulo_er +i);
 						++fila_emissao_first;
 					}
@@ -127,7 +127,7 @@ void Atualizar_Decodificacao()
 							break;
 					if(i< n_uf_mult)
 					{
-						printf("Emitindo instrucao 0x%x para estacao de reserva multiplicadora no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, i+1);
+						printf("Emitindo instrucao 0x%x para estacao de reserva multiplicadora no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, tomasulo_er[n_uf_soma +i].id);
 						Emissao_ER(tomasulo_decodificacao +fila_emissao_first, tomasulo_er +n_uf_soma +i);
 						++fila_emissao_first;
 					}
@@ -141,7 +141,7 @@ void Atualizar_Decodificacao()
 							break;
 					if(i< n_uf_divi)
 					{
-						printf("Emitindo instrucao 0x%x para estacao de reserva divisora no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, i+1);
+						printf("Emitindo instrucao 0x%x para estacao de reserva divisora no. %d\n", tomasulo_decodificacao[fila_emissao_first].codificada, tomasulo_er[n_uf_soma +n_uf_mult +i].id);
 						Emissao_ER(tomasulo_decodificacao +fila_emissao_first, tomasulo_er +n_uf_soma +n_uf_mult +i);
 						++fila_emissao_first;
 					}
@@ -157,13 +157,14 @@ void Atualizar_Decodificacao()
 
 int Atualiza_Componentes()
 {
-	//TODO: Atualiza banco de registradores
-	//TODO: Atualiza memoria
-	//TODO: Atualiza unidades funcionais
-	//TODO: Atualiza buffers de LOAD/STORE
-	//TODO: Atualiza estacoes de reserva
+	int i;
+	Atualizar_CDB();
+	Atualizar_Memoria();
+	for(i=0; i< n_uf_total; ++i)
+		Atualizar_Unidade_Funcional(clock_state, tomasulo_uf +i);
 	Atualizar_Decodificacao();
 	Atualizar_Busca();
+	Checar_Tomasulo_Fim();
 }
 
 int Configurar_Tomasulo()
@@ -280,15 +281,33 @@ int Configurar_Tomasulo()
 	for(i=0; i< MAX_REGISTERS; ++i)
 		tomasulo_registradores->qi[i] = 0;
 
-	//DEFININDO ID DAS UNIDADES FUNCIONAIS E DOS BUFFERS
+	//COLOCANDO UNIDADES FUNCIONAIS EM ESTADO LIVRE (PRONTAS PARA RECEBER INSTRUCOES)
+	//VINCULANDO CADA UF A UMA ESTACAO DE RESERVA E AO CDB
 	for(i=0; i< n_uf_total; ++i)
+	{
+		tomasulo_uf[i].estado = 0;
+		tomasulo_uf[i].er = tomasulo_er +i;
+		tomasulo_uf[i].cdb = tomasulo_cdb;
+	}
+
+	//DEFININDO ESTADO E ID DAS UNIDADES FUNCIONAIS E DOS BUFFERS
+	for(i=0; i< n_uf_total; ++i)
+	{
 		tomasulo_er[i].id = MAX_REGISTERS +1 +i;
+		tomasulo_er[i].b = 0;
+	}
 
 	for(i=0; i< n_buff_load; ++i)
+	{
 		tomasulo_buffer_load[i].id = MAX_REGISTERS +n_uf_total +1 +i;
+		tomasulo_buffer_load[i].estado = 0;
+	}
 
 	for(i=0; i< n_buff_store; ++i)
+	{
 		tomasulo_buffer_store[i].id = MAX_REGISTERS +n_uf_total +n_buff_load +1 +i;
+		tomasulo_buffer_store[i].estado = 0;
+	}
 
 	//DEFININDO VALOR INICIAL DO PROGRAM COUNTER
 	tomasulo_registradores->pc = tomasulo_memoria->text_start;
@@ -336,6 +355,8 @@ memoria_t *Inicializar_Memoria(uint32_t tamanho)
 
 	retorno->text_start = Montar_Codigo(programa, retorno->heap, retorno->tamanho, &(retorno->text_end));
 
+	retorno->estado = 0;
+
 	return retorno;	
 }
 
@@ -354,10 +375,9 @@ cdb_t *Inicializar_CDB(uint8_t tamanho_barramento)
 
 	retorno = malloc(sizeof(cdb_t));
 
-	retorno->largura_barramento = tamanho_barramento;
-	retorno->barramentos_em_uso = 0;
-	retorno->sinais = malloc(sizeof(sinal_t)*tamanho_barramento);
-	retorno->dados = malloc(sizeof(uint32_t)*tamanho_barramento);
+	retorno->sinal = SINAL_NO_SIGNAL;
+	retorno->dados = 0;
+	retorno->endereco = 0; 
 
 	return retorno;
 }
@@ -365,10 +385,6 @@ cdb_t *Inicializar_CDB(uint8_t tamanho_barramento)
 void Liberar_CDB(cdb_t **cdb)
 {
 	cdb_t *desaloc = *cdb;
-
-	free(desaloc->sinais);
-	free(desaloc->dados);
-
 	free(desaloc);
 }
 
@@ -501,6 +517,8 @@ uint8_t Emissao_Buffer(instrucao_t *instrucao, buffer_t *buffer)
 			if(buffer->q2 == 0)
 				buffer->v2 = tomasulo_registradores->registrador[instrucao->operando2];
 
+			buffer->q1 = 0;
+
 			//Essa unidade produzira valor para o registrador destino
 			tomasulo_registradores->qi[instrucao->operando1] = buffer->id;
 			break;
@@ -625,4 +643,144 @@ uint8_t Emissao_ER(instrucao_t *instrucao, estacao_reserva_t *er)
 	}
 	er->b = 1;
 	return 0;
+}
+
+void Atualizar_Memoria()
+{
+	int i;
+	uint32_t calc_end;
+
+	if(tomasulo_memoria->estado == 0)
+	{
+		for(i=0; i< n_buff_load; ++i)
+			if(tomasulo_buffer_load[i].estado == 1 && tomasulo_buffer_load[i].q1 == 0 && tomasulo_buffer_load[i].q2 == 0)
+				break;
+
+		if(i < n_buff_load)
+		{
+			tomasulo_memoria->resultado = tomasulo_buffer_load[i].v1;
+			tomasulo_memoria->endereco_acessado = tomasulo_buffer_load[i].v2;
+			tomasulo_memoria->buffer_req = tomasulo_buffer_load[i].id;
+			tomasulo_memoria->tipo = tomasulo_buffer_load[i].tipo;
+			tomasulo_memoria->tempo = 0;	
+			tomasulo_memoria->estado = 1;
+		}
+	}
+	if(tomasulo_memoria->estado == 0)
+	{
+		for(i=0; i< n_buff_store; ++i)
+			if(tomasulo_buffer_store[i].estado == 1 && tomasulo_buffer_store[i].q1 == 0 && tomasulo_buffer_store[i].q2 == 0)
+				break;
+
+		if(i < n_buff_store)
+		{
+			tomasulo_memoria->resultado = tomasulo_buffer_store[i].v1;
+			tomasulo_memoria->endereco_acessado = tomasulo_buffer_store[i].v2;
+			tomasulo_memoria->buffer_req = tomasulo_buffer_store[i].id;
+			tomasulo_memoria->tipo = tomasulo_buffer_store[i].tipo;
+			tomasulo_memoria->tempo = 0;	
+			tomasulo_memoria->estado = 1;
+		}
+	}
+	if(tomasulo_memoria->estado == 1)
+	{
+		++(tomasulo_memoria->tempo);
+		switch(tomasulo_memoria->tipo)
+		{
+			case LD_OPCODE:
+				if(tomasulo_memoria->tempo >= XTIME_LD)
+				{
+					calc_end = tomasulo_memoria->endereco_acessado;
+					calc_end /= 4;
+					tomasulo_memoria->resultado = tomasulo_memoria->heap[calc_end];
+					tomasulo_memoria->estado = 2;
+					printf("Carregando valor %d a partir do endereco de memoria 0x%x\n", tomasulo_memoria->resultado, tomasulo_memoria->endereco_acessado);
+				}
+				break;
+			case ST_OPCODE:
+				if(tomasulo_memoria->tempo >= XTIME_ST)
+				{
+					calc_end = tomasulo_memoria->endereco_acessado;
+					calc_end /= 4;
+					tomasulo_memoria->heap[calc_end] = tomasulo_memoria->resultado;
+					tomasulo_memoria->estado = 0;
+					for(i=0; i< n_buff_store; ++i)
+						if(tomasulo_buffer_store[i].id == tomasulo_memoria->buffer_req)
+							tomasulo_buffer_store[i].estado = 0;
+					printf("Escrevendo valor %d a partir do endereco de memoria 0x%x\n", tomasulo_memoria->resultado, tomasulo_memoria->endereco_acessado);
+				}
+				break;
+		}
+	}
+	if(tomasulo_memoria->estado == 2)
+	{
+		if(Emitir_Sinal_CDB(tomasulo_cdb, SINAL_RESULTADO_PRONTO, tomasulo_memoria->resultado, tomasulo_memoria->buffer_req))
+		{
+			tomasulo_memoria->estado = 0;
+			for(i=0; i< n_buff_load; ++i)
+				if(tomasulo_buffer_load[i].id == tomasulo_memoria->buffer_req)
+					tomasulo_buffer_load[i].estado = 0;
+		}
+	}
+}
+
+void Atualizar_CDB()
+{
+	int i;
+
+	switch(tomasulo_cdb->sinal)
+	{
+		case SINAL_NO_SIGNAL: break;
+		case SINAL_RESULTADO_PRONTO:
+			printf("Resultado pronto na unidade no. %d: %d\n", tomasulo_cdb->endereco, tomasulo_cdb->dados);
+			ER_Sinal_Pronto(tomasulo_er, n_uf_total, tomasulo_cdb->endereco, tomasulo_cdb->dados);
+			Buffer_Sinal_Pronto(tomasulo_buffer_load, n_buff_load, tomasulo_cdb->endereco, tomasulo_cdb->dados);
+			Buffer_Sinal_Pronto(tomasulo_buffer_store, n_buff_store, tomasulo_cdb->endereco, tomasulo_cdb->dados);
+			for(i=0; i<MAX_REGISTERS; ++i)
+			{
+				if(tomasulo_registradores->qi[i] == tomasulo_cdb->endereco)
+				{
+					tomasulo_registradores->qi[i] = 0;
+					tomasulo_registradores->registrador[i] = tomasulo_cdb->dados;
+				}
+			}
+			tomasulo_cdb->sinal = SINAL_NO_SIGNAL;
+			break;
+		case SINAL_SALTO_TAKEN:
+			tomasulo_registradores->pc = tomasulo_cdb->dados;
+			fila_emissao_empty = 1;
+			busca_instrucao_stall = 0;
+			tomasulo_cdb->sinal = SINAL_NO_SIGNAL;
+			break;
+		case SINAL_SALTO_NOTTAKEN:
+			busca_instrucao_stall = 0;
+			tomasulo_cdb->sinal = SINAL_NO_SIGNAL;
+			break;
+	}
+}
+
+void Checar_Tomasulo_Fim()
+{
+	int i, sair;
+
+	sair = 0;
+
+	if(busca_instrucao_stall != 0)
+	{
+		sair = 1;
+		for(i=0; i< n_uf_total; ++i)
+			if(tomasulo_er[i].b != 0)
+				sair = 0;
+		
+		for(i=0; i< n_buff_load; ++i)
+			if(tomasulo_buffer_load[i].estado != 0)
+				sair = 0;
+		
+		for(i=0; i< n_buff_store; ++i)
+			if(tomasulo_buffer_store[i].estado != 0)
+				sair = 0;
+	}
+
+	if(sair == 1)
+		tomasulo_exit = 1;
 }

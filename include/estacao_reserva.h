@@ -15,4 +15,6 @@ typedef struct estacao_reserva_t
 	int b; //busy: 0 caso esteja livre, 1 caso esteja ocupada
 }estacao_reserva_t;
 
+void ER_Sinal_Pronto(estacao_reserva_t *er, uint8_t n_er, uint8_t produtora, int32_t dados);
+
 #endif
