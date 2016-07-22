@@ -77,6 +77,7 @@ uint8_t tomasulo_exit;			//Indica fim da simulacao quando diferente de zero
 
 //VARIAVEIS DA UNIDADE DE BUSCA E DECODIFICACAO
 uint8_t busca_instrucao_stall;		//Indica stall na busca de instrucao quando diferente de zero
+uint8_t busca_instrucao_fim;		//Indica que a busca de instrucoes chegou ao fim da parte de texto
 uint8_t emissao_instrucao_stall;	//Indica stall na emissao de instrucoes quando diferente de zero
 uint8_t busca_instrucao_ready;		//Caso seja diferente de zero, instrucoes foram buscadas e estao prontas para serem emitidas
 uint8_t fila_emissao_first;		//Primeira instrucao para ser emitida no vetor *tomasulo_decodificacao

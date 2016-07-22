@@ -16,7 +16,7 @@ void Atualizar_Busca()
 {
 	int i, j;
 
-	if(busca_instrucao_stall != 0 || fila_emissao_empty == 0)
+	if(busca_instrucao_stall != 0 || fila_emissao_empty == 0 || busca_instrucao_fim != 0)
 		return;
 
 	j = (tomasulo_registradores->pc)/4;
@@ -26,9 +26,9 @@ void Atualizar_Busca()
 		++busca_instrucao_ready;
 		printf("Buscando instrucao: 0x%x na posicao 0x%x\n", tomasulo_busca[i], tomasulo_registradores->pc); 	
 		tomasulo_registradores->pc += 4;
-		if(tomasulo_registradores->pc > tomasulo_memoria->text_end)
+		if(tomasulo_registradores->pc >= tomasulo_memoria->text_end)
 		{
-			busca_instrucao_stall = 1;
+			busca_instrucao_fim = 1;
 			break;
 		}
 		++j;
@@ -57,7 +57,7 @@ void Atualizar_Decodificacao()
 	else if(fila_emissao_empty == 0 && emissao_instrucao_stall == 0)
 	{
 		perigo_estrutural = 0;
-		while(fila_emissao_first <= fila_emissao_last && perigo_estrutural == 0)
+		while(fila_emissao_first <= fila_emissao_last && perigo_estrutural == 0 && emissao_instrucao_stall == 0)
 		{
 			switch(tomasulo_decodificacao[fila_emissao_first].tipo_instrucao)
 			{
@@ -326,6 +326,7 @@ int Configurar_Tomasulo()
 	//LIBERANDO STALL DA BUSCA E EMISSAO, BUSCA AINDA NAO REALIZADA
 	busca_instrucao_stall = 0;
 	busca_instrucao_ready = 0;
+	busca_instrucao_fim = 0;
 	emissao_instrucao_stall = 0;
 
 	//FILA DE EMISSAO INICIALMENTE VAZIA
@@ -556,6 +557,14 @@ uint8_t Emissao_ER(instrucao_t *instrucao, estacao_reserva_t *er)
 	er->tipo = instrucao->tipo_instrucao;
 	switch(er->tipo)
 	{
+		//SALTO INCONDICIONAL b L
+		case B_OPCODE:
+			busca_instrucao_stall = 1;
+			emissao_instrucao_stall = 1;
+	
+			er->a = instrucao->imediato;
+			break;
+
 		//INSTRUCOES DE SALTO op R, I/L 
 		case BEQZ_OPCODE:
 		case BNEZ_OPCODE:
@@ -782,17 +791,29 @@ void Checar_Tomasulo_Fim()
 
 	sair = 0;
 
-	if(busca_instrucao_stall != 0)
+	if(busca_instrucao_fim != 0)
 	{
 		sair = 1;
+
+		//Fila de busca estah vazia?
+		if(busca_instrucao_ready != 0)
+			sair = 0;
+
+		//Fila de emissao estah vazia?
+		if(fila_emissao_empty == 0)
+			sair = 0;
+
+		//Estacoes de reserva estao vazias?
 		for(i=0; i< n_uf_total; ++i)
 			if(tomasulo_er[i].b != 0)
 				sair = 0;
 		
+		//Buffers de load estao vazios?
 		for(i=0; i< n_buff_load; ++i)
 			if(tomasulo_buffer_load[i].estado != 0)
 				sair = 0;
 		
+		//Buffers de store estao vazios?
 		for(i=0; i< n_buff_store; ++i)
 			if(tomasulo_buffer_store[i].estado != 0)
 				sair = 0;
