@@ -1,0 +1,83 @@
+ARQUITETURA
+	somador = 6
+	multiplicador = 2
+	divisor = 2
+	busca_de_instrucoes = 4
+	buffer_de_carga = 2
+	buffer_de_escrita = 2
+CICLOS
+	ld = 4
+	st = 4
+	li = 1
+	move = 1
+	beq = 2
+	beqz = 2
+	bne = 2
+	bnez = 2
+	bgt = 2
+	bge = 2
+	bgtz = 2
+	blt = 2
+	ble = 2
+	blez = 2
+	b = 1
+	add = 2
+	addi = 2
+	sub = 2
+	subi = 2
+	mult = 4
+	multi = 4
+	div = 4
+	divi = 4
+	and = 2
+	andi = 2
+	or = 2
+	ori = 2
+	neg = 2
+	not = 2
+	sll = 3
+	slr = 3
+TEXTO
+.data
+	vetor:
+	.int 5
+	.int 9
+	.int 1
+	.int 2
+	.int 6
+	.int 7
+	.int 3
+	.int 8
+	.int 0
+	.int 4
+	tamanho: .int 10
+.text
+	li r0, tamanho
+	ld r1, r0
+	subi r1, r1, 1
+	li r0, vetor
+	li r4, 0
+loop:
+	ld r2, r0
+	addi r0, r0, 4
+	ld r3, r0
+	ble r2, r3, continua
+swap:
+	st r2, r0
+	subi r0, r0, 4
+	st r3, r0
+	addi r0, r0, 4
+continua:
+	addi r4, r4, 1
+	beq r1, r4, reseta
+	b loop
+reseta:
+	li r4, 0
+	subi r1, r1, 1
+	beqz r1, fim
+	li r0, vetor
+	b loop
+fim:
+	li r0, tamanho
+	li r1, 0
+	st r1, r0

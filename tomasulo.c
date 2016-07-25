@@ -26,7 +26,7 @@ void Atualizar_Busca()
 		++busca_instrucao_ready;
 		printf("Buscando instrucao: 0x%x na posicao 0x%x\n", tomasulo_busca[i], tomasulo_registradores->pc); 	
 		tomasulo_registradores->pc += 4;
-		if(tomasulo_registradores->pc >= tomasulo_memoria->text_end)
+		if(tomasulo_registradores->pc > tomasulo_memoria->text_end)
 		{
 			busca_instrucao_fim = 1;
 			break;
@@ -754,6 +754,8 @@ void Atualizar_CDB()
 	switch(tomasulo_cdb->sinal)
 	{
 		case SINAL_NO_SIGNAL: break;
+
+		//Resultado pronto em uma ER ou BUFFER. Fazer broadcast aos demais
 		case SINAL_RESULTADO_PRONTO:
 			printf("Resultado pronto na unidade no. %d: %d\n", tomasulo_cdb->endereco, tomasulo_cdb->dados);
 			ER_Sinal_Pronto(tomasulo_er, n_uf_total, tomasulo_cdb->endereco, tomasulo_cdb->dados);
@@ -769,12 +771,16 @@ void Atualizar_CDB()
 			}
 			tomasulo_cdb->sinal = SINAL_NO_SIGNAL;
 			break;
+
+		//Salto em processamento foi TOMADO
 		case SINAL_SALTO_TAKEN:
 			tomasulo_registradores->pc = tomasulo_cdb->dados;
 			printf("Saltando para o endereco 0x%x\n", tomasulo_registradores->pc);
-			fila_emissao_empty = 1;
-			busca_instrucao_stall = 0;
-			emissao_instrucao_stall = 0;
+			fila_emissao_empty = 1; //esvazia fila de emissao
+			busca_instrucao_ready = 0; //esvazia fila de decodificacao
+			busca_instrucao_stall = 0; //libera busca de instrucoes
+			emissao_instrucao_stall = 0; //libera emissao de instrucoes
+			busca_instrucao_fim = 0; //caso tenha chegado no fim do arquivo apos o salto, cancela flag
 			tomasulo_cdb->sinal = SINAL_NO_SIGNAL;
 			break;
 		case SINAL_SALTO_NOTTAKEN:
@@ -821,4 +827,21 @@ void Checar_Tomasulo_Fim()
 
 	if(sair == 1)
 		tomasulo_exit = 1;
+}
+
+void Tomasulo_Memory_Dump()
+{
+	int i;
+	uint32_t fim_programa;
+
+	fim_programa = tomasulo_memoria->text_end /4;
+
+	printf("\n0x00000000: ");
+	for(i=0; i< fim_programa; ++i)
+	{
+		printf("%08x ", tomasulo_memoria->heap[i]);
+		if(i%4 == 3 && i+1 < fim_programa)
+			printf("\n0x%08x: ", (i+1)*4);
+	}
+	printf("\n\n");	
 }

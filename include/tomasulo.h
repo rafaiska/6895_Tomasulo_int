@@ -110,4 +110,5 @@ uint8_t Emissao_ER(instrucao_t *instrucao, estacao_reserva_t *er); //Emite instr
 void Atualizar_Memoria(); //Processa leituras e escritas na memoria, emite ao CDB quando estao prontas
 void Atualizar_CDB(); //Captura sinais de broadcast do CDB e os transmite aas estacoes de reserva, buffers e banco de registradores
 void Checar_Tomasulo_Fim(); //Verifica se o programa terminou sua execucao
+void Tomasulo_Memory_Dump(); //Mostra o conteudo da memoria virtual na saida padrao
 #endif

@@ -590,12 +590,6 @@ uint32_t Montar_Codigo(char *codigo, uint32_t *heap, uint32_t tamanho_memoria, u
 		}
 	}
 
-	//Para depuracao da memoria
-	//for(i=0; i<20; ++i)
-	//	printf("0x%x\n", heap[i]);
-	//printf("Texto comecando em: 0x%x, terminando em 0x%x\n", text_start, *text_end);
-
-	//Liberar memoria da lista de rotulos
 	while(lista != NULL)
 	{
 		lista_aux = lista;
