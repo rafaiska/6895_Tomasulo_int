@@ -648,7 +648,9 @@ uint32_t Calcular_Tamanho_Instrucao(char *instrucao)
 	while(instrucao[i] == ' ' || instrucao[i] == '\t')
 		++i;
 
-	if(instrucao[i] == '.')
+	if(instrucao[i] == '\0')
+		return 0;
+	else if(instrucao[i] == '.')
 	{
 		if(instrucao[i+1] == 'i')
 			return 4;
