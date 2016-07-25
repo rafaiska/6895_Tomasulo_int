@@ -1,0 +1,682 @@
+========================
+INICIALIZANDO SIMULADOR!
+========================
+	Numero de UF somadoras: 6
+	Numero de UF multiplicadoras: 2
+	Numero de UF divisoras: 2
+	Numero de instrucoes buscadas por ciclo: 4
+	Numero de buffers de carga: 2
+	Numero de buffers de escrita: 2
+	Tamanho da memoria virtual: 32 kB
+
+
+==========================
+ESTADO INICIAL DA MEMORIA:
+==========================
+
+0x00000000: 00000001 00000002 00000003 00000004 
+0x00000010: 00000005 00000006 00000007 00000008 
+0x00000020: 00000009 0000000a 0000000a 00000009 
+0x00000030: ffffffff 4000002c 00a00000 40c00000 
+0x00000040: 40000028 00200000 84210001 08410000 
+0x00000050: 8c420002 a0c100ac 40000000 08620000 
+0x00000060: 88630004 14001800 00800000 988500a4 
+0x00000070: a085008c 08220000 84420001 18423000 
+0x00000080: 8c420002 14423000 c0000054 08c20000 
+0x00000090: 80420001 18411000 8c420002 14423000 
+0x000000a0: c0000054 40000030 
+
+Buscando instrucao: 0x4000002c na posicao 0x34
+Buscando instrucao: 0xa00000 na posicao 0x38
+Buscando instrucao: 0x40c00000 na posicao 0x3c
+Buscando instrucao: 0x40000028 na posicao 0x40
+	CICLO DE CLOCK: 1
+Decodificando instrucao 0x4000002c
+Decodificando instrucao 0xa00000
+Decodificando instrucao 0x40c00000
+Decodificando instrucao 0x40000028
+Emitindo instrucao 0x4000002c para estacao de reserva somadora no. 33
+Emitindo instrucao 0xa00000 para buffer de load no. 43
+Emitindo instrucao 0x40c00000 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x40000028 para estacao de reserva somadora no. 35
+Buscando instrucao: 0x200000 na posicao 0x44
+Buscando instrucao: 0x84210001 na posicao 0x48
+Buscando instrucao: 0x8410000 na posicao 0x4c
+Buscando instrucao: 0x8c420002 na posicao 0x50
+	CICLO DE CLOCK: 2
+Resultado pronto na unidade no. 33: 44
+Decodificando instrucao 0x200000
+Decodificando instrucao 0x84210001
+Decodificando instrucao 0x8410000
+Decodificando instrucao 0x8c420002
+Resultado pronto na unidade no. 34: 0
+Emitindo instrucao 0x200000 para buffer de load no. 44
+Emitindo instrucao 0x84210001 para estacao de reserva somadora no. 33
+Emitindo instrucao 0x8410000 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x8c420002 para estacao de reserva divisora no. 41
+Buscando instrucao: 0xa0c100ac na posicao 0x54
+Buscando instrucao: 0x40000000 na posicao 0x58
+Buscando instrucao: 0x8620000 na posicao 0x5c
+Buscando instrucao: 0x88630004 na posicao 0x60
+	CICLO DE CLOCK: 3
+Resultado pronto na unidade no. 35: 40
+Decodificando instrucao 0xa0c100ac
+Decodificando instrucao 0x40000000
+Decodificando instrucao 0x8620000
+Decodificando instrucao 0x88630004
+Emitindo instrucao 0xa0c100ac para estacao de reserva somadora no. 35
+	CICLO DE CLOCK: 4
+Carregando valor 9 a partir do endereco de memoria 0x2c
+Resultado pronto na unidade no. 43: 9
+	CICLO DE CLOCK: 5
+	CICLO DE CLOCK: 6
+Carregando valor 10 a partir do endereco de memoria 0x28
+Resultado pronto na unidade no. 44: 10
+	CICLO DE CLOCK: 7
+	CICLO DE CLOCK: 8
+Resultado pronto na unidade no. 33: 9
+	CICLO DE CLOCK: 9
+Resultado pronto na unidade no. 34: 9
+	CICLO DE CLOCK: 10
+Emitindo instrucao 0x40000000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0x8620000 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x88630004 para estacao de reserva multiplicadora no. 39
+Buscando instrucao: 0x14001800 na posicao 0x64
+Buscando instrucao: 0x800000 na posicao 0x68
+Buscando instrucao: 0x988500a4 na posicao 0x6c
+Buscando instrucao: 0xa085008c na posicao 0x70
+Decodificando instrucao 0x14001800
+Decodificando instrucao 0x800000
+Decodificando instrucao 0x988500a4
+Decodificando instrucao 0xa085008c
+	CICLO DE CLOCK: 11
+Resultado pronto na unidade no. 33: 0
+Emitindo instrucao 0x14001800 para estacao de reserva somadora no. 33
+Emitindo instrucao 0x800000 para buffer de load no. 43
+Emitindo instrucao 0x988500a4 para estacao de reserva somadora no. 35
+	CICLO DE CLOCK: 12
+	CICLO DE CLOCK: 13
+Resultado pronto na unidade no. 41: 18
+	CICLO DE CLOCK: 14
+Resultado pronto na unidade no. 34: 18
+	CICLO DE CLOCK: 15
+	CICLO DE CLOCK: 16
+	CICLO DE CLOCK: 17
+	CICLO DE CLOCK: 18
+Resultado pronto na unidade no. 39: 72
+	CICLO DE CLOCK: 19
+	CICLO DE CLOCK: 20
+Resultado pronto na unidade no. 33: 72
+	CICLO DE CLOCK: 21
+	CICLO DE CLOCK: 22
+Carregando valor -2078212095 a partir do endereco de memoria 0x48
+Resultado pronto na unidade no. 43: -2078212095
+	CICLO DE CLOCK: 23
+	CICLO DE CLOCK: 24
+Emitindo instrucao 0xa085008c para estacao de reserva somadora no. 33
+	CICLO DE CLOCK: 25
+	CICLO DE CLOCK: 26
+Buscando instrucao: 0x8220000 na posicao 0x74
+Buscando instrucao: 0x84420001 na posicao 0x78
+Buscando instrucao: 0x18423000 na posicao 0x7c
+Buscando instrucao: 0x8c420002 na posicao 0x80
+Decodificando instrucao 0x8220000
+Decodificando instrucao 0x84420001
+Decodificando instrucao 0x18423000
+Decodificando instrucao 0x8c420002
+	CICLO DE CLOCK: 27
+Emitindo instrucao 0x8220000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0x84420001 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x18423000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x8c420002 para estacao de reserva divisora no. 41
+Buscando instrucao: 0x14423000 na posicao 0x84
+Buscando instrucao: 0xc0000054 na posicao 0x88
+Buscando instrucao: 0x8c20000 na posicao 0x8c
+Buscando instrucao: 0x80420001 na posicao 0x90
+Decodificando instrucao 0x14423000
+Decodificando instrucao 0xc0000054
+Decodificando instrucao 0x8c20000
+Decodificando instrucao 0x80420001
+	CICLO DE CLOCK: 28
+Resultado pronto na unidade no. 33: 18
+Emitindo instrucao 0x14423000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0xc0000054 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 29
+Resultado pronto na unidade no. 34: 17
+Saltando para o endereco 0x54
+Buscando instrucao: 0xa0c100ac na posicao 0x54
+Buscando instrucao: 0x40000000 na posicao 0x58
+Buscando instrucao: 0x8620000 na posicao 0x5c
+Buscando instrucao: 0x88630004 na posicao 0x60
+	CICLO DE CLOCK: 30
+Decodificando instrucao 0xa0c100ac
+Decodificando instrucao 0x40000000
+Decodificando instrucao 0x8620000
+Decodificando instrucao 0x88630004
+Emitindo instrucao 0xa0c100ac para estacao de reserva somadora no. 34
+	CICLO DE CLOCK: 31
+Resultado pronto na unidade no. 35: 17
+	CICLO DE CLOCK: 32
+Emitindo instrucao 0x40000000 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x8620000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x88630004 para estacao de reserva multiplicadora no. 39
+Buscando instrucao: 0x14001800 na posicao 0x64
+Buscando instrucao: 0x800000 na posicao 0x68
+Buscando instrucao: 0x988500a4 na posicao 0x6c
+Buscando instrucao: 0xa085008c na posicao 0x70
+Decodificando instrucao 0x14001800
+Decodificando instrucao 0x800000
+Decodificando instrucao 0x988500a4
+Decodificando instrucao 0xa085008c
+	CICLO DE CLOCK: 33
+Resultado pronto na unidade no. 34: 0
+Emitindo instrucao 0x14001800 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x800000 para buffer de load no. 43
+Emitindo instrucao 0x988500a4 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 34
+	CICLO DE CLOCK: 35
+Resultado pronto na unidade no. 41: 34
+	CICLO DE CLOCK: 36
+	CICLO DE CLOCK: 37
+Resultado pronto na unidade no. 33: 34
+	CICLO DE CLOCK: 38
+Resultado pronto na unidade no. 35: 34
+	CICLO DE CLOCK: 39
+	CICLO DE CLOCK: 40
+	CICLO DE CLOCK: 41
+	CICLO DE CLOCK: 42
+Resultado pronto na unidade no. 39: 136
+	CICLO DE CLOCK: 43
+	CICLO DE CLOCK: 44
+Resultado pronto na unidade no. 34: 136
+	CICLO DE CLOCK: 45
+	CICLO DE CLOCK: 46
+Carregando valor -1073741740 a partir do endereco de memoria 0x88
+Resultado pronto na unidade no. 43: -1073741740
+	CICLO DE CLOCK: 47
+	CICLO DE CLOCK: 48
+Emitindo instrucao 0xa085008c para estacao de reserva somadora no. 33
+	CICLO DE CLOCK: 49
+	CICLO DE CLOCK: 50
+Buscando instrucao: 0x8220000 na posicao 0x74
+Buscando instrucao: 0x84420001 na posicao 0x78
+Buscando instrucao: 0x18423000 na posicao 0x7c
+Buscando instrucao: 0x8c420002 na posicao 0x80
+Decodificando instrucao 0x8220000
+Decodificando instrucao 0x84420001
+Decodificando instrucao 0x18423000
+Decodificando instrucao 0x8c420002
+	CICLO DE CLOCK: 51
+Emitindo instrucao 0x8220000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0x84420001 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x18423000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x8c420002 para estacao de reserva divisora no. 41
+Buscando instrucao: 0x14423000 na posicao 0x84
+Buscando instrucao: 0xc0000054 na posicao 0x88
+Buscando instrucao: 0x8c20000 na posicao 0x8c
+Buscando instrucao: 0x80420001 na posicao 0x90
+Decodificando instrucao 0x14423000
+Decodificando instrucao 0xc0000054
+Decodificando instrucao 0x8c20000
+Decodificando instrucao 0x80420001
+	CICLO DE CLOCK: 52
+Resultado pronto na unidade no. 33: 34
+Emitindo instrucao 0x14423000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0xc0000054 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 53
+Resultado pronto na unidade no. 34: 33
+Saltando para o endereco 0x54
+Buscando instrucao: 0xa0c100ac na posicao 0x54
+Buscando instrucao: 0x40000000 na posicao 0x58
+Buscando instrucao: 0x8620000 na posicao 0x5c
+Buscando instrucao: 0x88630004 na posicao 0x60
+	CICLO DE CLOCK: 54
+Decodificando instrucao 0xa0c100ac
+Decodificando instrucao 0x40000000
+Decodificando instrucao 0x8620000
+Decodificando instrucao 0x88630004
+Emitindo instrucao 0xa0c100ac para estacao de reserva somadora no. 34
+	CICLO DE CLOCK: 55
+Resultado pronto na unidade no. 35: 33
+	CICLO DE CLOCK: 56
+Emitindo instrucao 0x40000000 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x8620000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x88630004 para estacao de reserva multiplicadora no. 39
+Buscando instrucao: 0x14001800 na posicao 0x64
+Buscando instrucao: 0x800000 na posicao 0x68
+Buscando instrucao: 0x988500a4 na posicao 0x6c
+Buscando instrucao: 0xa085008c na posicao 0x70
+Decodificando instrucao 0x14001800
+Decodificando instrucao 0x800000
+Decodificando instrucao 0x988500a4
+Decodificando instrucao 0xa085008c
+	CICLO DE CLOCK: 57
+Resultado pronto na unidade no. 34: 0
+Emitindo instrucao 0x14001800 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x800000 para buffer de load no. 43
+Emitindo instrucao 0x988500a4 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 58
+	CICLO DE CLOCK: 59
+Resultado pronto na unidade no. 41: 66
+	CICLO DE CLOCK: 60
+	CICLO DE CLOCK: 61
+Resultado pronto na unidade no. 33: 66
+	CICLO DE CLOCK: 62
+Resultado pronto na unidade no. 35: 66
+	CICLO DE CLOCK: 63
+	CICLO DE CLOCK: 64
+	CICLO DE CLOCK: 65
+	CICLO DE CLOCK: 66
+Resultado pronto na unidade no. 39: 264
+	CICLO DE CLOCK: 67
+	CICLO DE CLOCK: 68
+Resultado pronto na unidade no. 34: 264
+	CICLO DE CLOCK: 69
+	CICLO DE CLOCK: 70
+Carregando valor 0 a partir do endereco de memoria 0x108
+Resultado pronto na unidade no. 43: 0
+	CICLO DE CLOCK: 71
+	CICLO DE CLOCK: 72
+Emitindo instrucao 0xa085008c para estacao de reserva somadora no. 33
+	CICLO DE CLOCK: 73
+	CICLO DE CLOCK: 74
+Buscando instrucao: 0x8220000 na posicao 0x74
+Buscando instrucao: 0x84420001 na posicao 0x78
+Buscando instrucao: 0x18423000 na posicao 0x7c
+Buscando instrucao: 0x8c420002 na posicao 0x80
+Decodificando instrucao 0x8220000
+Decodificando instrucao 0x84420001
+Decodificando instrucao 0x18423000
+Decodificando instrucao 0x8c420002
+	CICLO DE CLOCK: 75
+Emitindo instrucao 0x8220000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0x84420001 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x18423000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x8c420002 para estacao de reserva divisora no. 41
+Buscando instrucao: 0x14423000 na posicao 0x84
+Buscando instrucao: 0xc0000054 na posicao 0x88
+Buscando instrucao: 0x8c20000 na posicao 0x8c
+Buscando instrucao: 0x80420001 na posicao 0x90
+Decodificando instrucao 0x14423000
+Decodificando instrucao 0xc0000054
+Decodificando instrucao 0x8c20000
+Decodificando instrucao 0x80420001
+	CICLO DE CLOCK: 76
+Resultado pronto na unidade no. 33: 66
+Emitindo instrucao 0x14423000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0xc0000054 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 77
+Resultado pronto na unidade no. 34: 65
+Saltando para o endereco 0x54
+Buscando instrucao: 0xa0c100ac na posicao 0x54
+Buscando instrucao: 0x40000000 na posicao 0x58
+Buscando instrucao: 0x8620000 na posicao 0x5c
+Buscando instrucao: 0x88630004 na posicao 0x60
+	CICLO DE CLOCK: 78
+Decodificando instrucao 0xa0c100ac
+Decodificando instrucao 0x40000000
+Decodificando instrucao 0x8620000
+Decodificando instrucao 0x88630004
+Emitindo instrucao 0xa0c100ac para estacao de reserva somadora no. 34
+	CICLO DE CLOCK: 79
+Resultado pronto na unidade no. 35: 65
+	CICLO DE CLOCK: 80
+Emitindo instrucao 0x40000000 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x8620000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x88630004 para estacao de reserva multiplicadora no. 39
+Buscando instrucao: 0x14001800 na posicao 0x64
+Buscando instrucao: 0x800000 na posicao 0x68
+Buscando instrucao: 0x988500a4 na posicao 0x6c
+Buscando instrucao: 0xa085008c na posicao 0x70
+Decodificando instrucao 0x14001800
+Decodificando instrucao 0x800000
+Decodificando instrucao 0x988500a4
+Decodificando instrucao 0xa085008c
+	CICLO DE CLOCK: 81
+Resultado pronto na unidade no. 34: 0
+Emitindo instrucao 0x14001800 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x800000 para buffer de load no. 43
+Emitindo instrucao 0x988500a4 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 82
+	CICLO DE CLOCK: 83
+Resultado pronto na unidade no. 41: 130
+	CICLO DE CLOCK: 84
+	CICLO DE CLOCK: 85
+Resultado pronto na unidade no. 33: 130
+	CICLO DE CLOCK: 86
+Resultado pronto na unidade no. 35: 130
+	CICLO DE CLOCK: 87
+	CICLO DE CLOCK: 88
+	CICLO DE CLOCK: 89
+	CICLO DE CLOCK: 90
+Resultado pronto na unidade no. 39: 520
+	CICLO DE CLOCK: 91
+	CICLO DE CLOCK: 92
+Resultado pronto na unidade no. 34: 520
+	CICLO DE CLOCK: 93
+	CICLO DE CLOCK: 94
+Carregando valor 0 a partir do endereco de memoria 0x208
+Resultado pronto na unidade no. 43: 0
+	CICLO DE CLOCK: 95
+	CICLO DE CLOCK: 96
+Emitindo instrucao 0xa085008c para estacao de reserva somadora no. 33
+	CICLO DE CLOCK: 97
+	CICLO DE CLOCK: 98
+Buscando instrucao: 0x8220000 na posicao 0x74
+Buscando instrucao: 0x84420001 na posicao 0x78
+Buscando instrucao: 0x18423000 na posicao 0x7c
+Buscando instrucao: 0x8c420002 na posicao 0x80
+Decodificando instrucao 0x8220000
+Decodificando instrucao 0x84420001
+Decodificando instrucao 0x18423000
+Decodificando instrucao 0x8c420002
+	CICLO DE CLOCK: 99
+Emitindo instrucao 0x8220000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0x84420001 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x18423000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x8c420002 para estacao de reserva divisora no. 41
+Buscando instrucao: 0x14423000 na posicao 0x84
+Buscando instrucao: 0xc0000054 na posicao 0x88
+Buscando instrucao: 0x8c20000 na posicao 0x8c
+Buscando instrucao: 0x80420001 na posicao 0x90
+Decodificando instrucao 0x14423000
+Decodificando instrucao 0xc0000054
+Decodificando instrucao 0x8c20000
+Decodificando instrucao 0x80420001
+	CICLO DE CLOCK: 100
+Resultado pronto na unidade no. 33: 130
+Emitindo instrucao 0x14423000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0xc0000054 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 101
+Resultado pronto na unidade no. 34: 129
+Saltando para o endereco 0x54
+Buscando instrucao: 0xa0c100ac na posicao 0x54
+Buscando instrucao: 0x40000000 na posicao 0x58
+Buscando instrucao: 0x8620000 na posicao 0x5c
+Buscando instrucao: 0x88630004 na posicao 0x60
+	CICLO DE CLOCK: 102
+Decodificando instrucao 0xa0c100ac
+Decodificando instrucao 0x40000000
+Decodificando instrucao 0x8620000
+Decodificando instrucao 0x88630004
+Emitindo instrucao 0xa0c100ac para estacao de reserva somadora no. 34
+	CICLO DE CLOCK: 103
+Resultado pronto na unidade no. 35: 129
+	CICLO DE CLOCK: 104
+Emitindo instrucao 0x40000000 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x8620000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x88630004 para estacao de reserva multiplicadora no. 39
+Buscando instrucao: 0x14001800 na posicao 0x64
+Buscando instrucao: 0x800000 na posicao 0x68
+Buscando instrucao: 0x988500a4 na posicao 0x6c
+Buscando instrucao: 0xa085008c na posicao 0x70
+Decodificando instrucao 0x14001800
+Decodificando instrucao 0x800000
+Decodificando instrucao 0x988500a4
+Decodificando instrucao 0xa085008c
+	CICLO DE CLOCK: 105
+Resultado pronto na unidade no. 34: 0
+Emitindo instrucao 0x14001800 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x800000 para buffer de load no. 43
+Emitindo instrucao 0x988500a4 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 106
+	CICLO DE CLOCK: 107
+Resultado pronto na unidade no. 41: 258
+	CICLO DE CLOCK: 108
+	CICLO DE CLOCK: 109
+Resultado pronto na unidade no. 33: 258
+	CICLO DE CLOCK: 110
+Resultado pronto na unidade no. 35: 258
+	CICLO DE CLOCK: 111
+	CICLO DE CLOCK: 112
+	CICLO DE CLOCK: 113
+	CICLO DE CLOCK: 114
+Resultado pronto na unidade no. 39: 1032
+	CICLO DE CLOCK: 115
+	CICLO DE CLOCK: 116
+Resultado pronto na unidade no. 34: 1032
+	CICLO DE CLOCK: 117
+	CICLO DE CLOCK: 118
+Carregando valor 0 a partir do endereco de memoria 0x408
+Resultado pronto na unidade no. 43: 0
+	CICLO DE CLOCK: 119
+	CICLO DE CLOCK: 120
+Emitindo instrucao 0xa085008c para estacao de reserva somadora no. 33
+	CICLO DE CLOCK: 121
+	CICLO DE CLOCK: 122
+Buscando instrucao: 0x8220000 na posicao 0x74
+Buscando instrucao: 0x84420001 na posicao 0x78
+Buscando instrucao: 0x18423000 na posicao 0x7c
+Buscando instrucao: 0x8c420002 na posicao 0x80
+Decodificando instrucao 0x8220000
+Decodificando instrucao 0x84420001
+Decodificando instrucao 0x18423000
+Decodificando instrucao 0x8c420002
+	CICLO DE CLOCK: 123
+Emitindo instrucao 0x8220000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0x84420001 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x18423000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x8c420002 para estacao de reserva divisora no. 41
+Buscando instrucao: 0x14423000 na posicao 0x84
+Buscando instrucao: 0xc0000054 na posicao 0x88
+Buscando instrucao: 0x8c20000 na posicao 0x8c
+Buscando instrucao: 0x80420001 na posicao 0x90
+Decodificando instrucao 0x14423000
+Decodificando instrucao 0xc0000054
+Decodificando instrucao 0x8c20000
+Decodificando instrucao 0x80420001
+	CICLO DE CLOCK: 124
+Resultado pronto na unidade no. 33: 258
+Emitindo instrucao 0x14423000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0xc0000054 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 125
+Resultado pronto na unidade no. 34: 257
+Saltando para o endereco 0x54
+Buscando instrucao: 0xa0c100ac na posicao 0x54
+Buscando instrucao: 0x40000000 na posicao 0x58
+Buscando instrucao: 0x8620000 na posicao 0x5c
+Buscando instrucao: 0x88630004 na posicao 0x60
+	CICLO DE CLOCK: 126
+Decodificando instrucao 0xa0c100ac
+Decodificando instrucao 0x40000000
+Decodificando instrucao 0x8620000
+Decodificando instrucao 0x88630004
+Emitindo instrucao 0xa0c100ac para estacao de reserva somadora no. 34
+	CICLO DE CLOCK: 127
+Resultado pronto na unidade no. 35: 257
+	CICLO DE CLOCK: 128
+Emitindo instrucao 0x40000000 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x8620000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x88630004 para estacao de reserva multiplicadora no. 39
+Buscando instrucao: 0x14001800 na posicao 0x64
+Buscando instrucao: 0x800000 na posicao 0x68
+Buscando instrucao: 0x988500a4 na posicao 0x6c
+Buscando instrucao: 0xa085008c na posicao 0x70
+Decodificando instrucao 0x14001800
+Decodificando instrucao 0x800000
+Decodificando instrucao 0x988500a4
+Decodificando instrucao 0xa085008c
+	CICLO DE CLOCK: 129
+Resultado pronto na unidade no. 34: 0
+Emitindo instrucao 0x14001800 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x800000 para buffer de load no. 43
+Emitindo instrucao 0x988500a4 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 130
+	CICLO DE CLOCK: 131
+Resultado pronto na unidade no. 41: 514
+	CICLO DE CLOCK: 132
+	CICLO DE CLOCK: 133
+Resultado pronto na unidade no. 33: 514
+	CICLO DE CLOCK: 134
+Resultado pronto na unidade no. 35: 514
+	CICLO DE CLOCK: 135
+	CICLO DE CLOCK: 136
+	CICLO DE CLOCK: 137
+	CICLO DE CLOCK: 138
+Resultado pronto na unidade no. 39: 2056
+	CICLO DE CLOCK: 139
+	CICLO DE CLOCK: 140
+Resultado pronto na unidade no. 34: 2056
+	CICLO DE CLOCK: 141
+	CICLO DE CLOCK: 142
+Carregando valor 0 a partir do endereco de memoria 0x808
+Resultado pronto na unidade no. 43: 0
+	CICLO DE CLOCK: 143
+	CICLO DE CLOCK: 144
+Emitindo instrucao 0xa085008c para estacao de reserva somadora no. 33
+	CICLO DE CLOCK: 145
+	CICLO DE CLOCK: 146
+Buscando instrucao: 0x8220000 na posicao 0x74
+Buscando instrucao: 0x84420001 na posicao 0x78
+Buscando instrucao: 0x18423000 na posicao 0x7c
+Buscando instrucao: 0x8c420002 na posicao 0x80
+Decodificando instrucao 0x8220000
+Decodificando instrucao 0x84420001
+Decodificando instrucao 0x18423000
+Decodificando instrucao 0x8c420002
+	CICLO DE CLOCK: 147
+Emitindo instrucao 0x8220000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0x84420001 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x18423000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x8c420002 para estacao de reserva divisora no. 41
+Buscando instrucao: 0x14423000 na posicao 0x84
+Buscando instrucao: 0xc0000054 na posicao 0x88
+Buscando instrucao: 0x8c20000 na posicao 0x8c
+Buscando instrucao: 0x80420001 na posicao 0x90
+Decodificando instrucao 0x14423000
+Decodificando instrucao 0xc0000054
+Decodificando instrucao 0x8c20000
+Decodificando instrucao 0x80420001
+	CICLO DE CLOCK: 148
+Resultado pronto na unidade no. 33: 514
+Emitindo instrucao 0x14423000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0xc0000054 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 149
+Resultado pronto na unidade no. 34: 513
+Saltando para o endereco 0x54
+Buscando instrucao: 0xa0c100ac na posicao 0x54
+Buscando instrucao: 0x40000000 na posicao 0x58
+Buscando instrucao: 0x8620000 na posicao 0x5c
+Buscando instrucao: 0x88630004 na posicao 0x60
+	CICLO DE CLOCK: 150
+Decodificando instrucao 0xa0c100ac
+Decodificando instrucao 0x40000000
+Decodificando instrucao 0x8620000
+Decodificando instrucao 0x88630004
+Emitindo instrucao 0xa0c100ac para estacao de reserva somadora no. 34
+	CICLO DE CLOCK: 151
+Resultado pronto na unidade no. 35: 513
+	CICLO DE CLOCK: 152
+Emitindo instrucao 0x40000000 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x8620000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x88630004 para estacao de reserva multiplicadora no. 39
+Buscando instrucao: 0x14001800 na posicao 0x64
+Buscando instrucao: 0x800000 na posicao 0x68
+Buscando instrucao: 0x988500a4 na posicao 0x6c
+Buscando instrucao: 0xa085008c na posicao 0x70
+Decodificando instrucao 0x14001800
+Decodificando instrucao 0x800000
+Decodificando instrucao 0x988500a4
+Decodificando instrucao 0xa085008c
+	CICLO DE CLOCK: 153
+Resultado pronto na unidade no. 34: 0
+Emitindo instrucao 0x14001800 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x800000 para buffer de load no. 43
+Emitindo instrucao 0x988500a4 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 154
+	CICLO DE CLOCK: 155
+Resultado pronto na unidade no. 41: 1026
+	CICLO DE CLOCK: 156
+	CICLO DE CLOCK: 157
+Resultado pronto na unidade no. 33: 1026
+	CICLO DE CLOCK: 158
+Resultado pronto na unidade no. 35: 1026
+	CICLO DE CLOCK: 159
+	CICLO DE CLOCK: 160
+	CICLO DE CLOCK: 161
+	CICLO DE CLOCK: 162
+Resultado pronto na unidade no. 39: 4104
+	CICLO DE CLOCK: 163
+	CICLO DE CLOCK: 164
+Resultado pronto na unidade no. 34: 4104
+	CICLO DE CLOCK: 165
+	CICLO DE CLOCK: 166
+Carregando valor 4113 a partir do endereco de memoria 0x1008
+Resultado pronto na unidade no. 43: 4113
+	CICLO DE CLOCK: 167
+	CICLO DE CLOCK: 168
+Emitindo instrucao 0xa085008c para estacao de reserva somadora no. 33
+	CICLO DE CLOCK: 169
+	CICLO DE CLOCK: 170
+Saltando para o endereco 0x8c
+Buscando instrucao: 0x8c20000 na posicao 0x8c
+Buscando instrucao: 0x80420001 na posicao 0x90
+Buscando instrucao: 0x18411000 na posicao 0x94
+Buscando instrucao: 0x8c420002 na posicao 0x98
+Decodificando instrucao 0x8c20000
+Decodificando instrucao 0x80420001
+Decodificando instrucao 0x18411000
+Decodificando instrucao 0x8c420002
+	CICLO DE CLOCK: 171
+Emitindo instrucao 0x8c20000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0x80420001 para estacao de reserva somadora no. 34
+Emitindo instrucao 0x18411000 para estacao de reserva somadora no. 35
+Emitindo instrucao 0x8c420002 para estacao de reserva divisora no. 41
+Buscando instrucao: 0x14423000 na posicao 0x9c
+Buscando instrucao: 0xc0000054 na posicao 0xa0
+Buscando instrucao: 0x40000030 na posicao 0xa4
+Buscando instrucao: 0x4600000 na posicao 0xa8
+Decodificando instrucao 0x14423000
+Decodificando instrucao 0xc0000054
+Decodificando instrucao 0x40000030
+Decodificando instrucao 0x4600000
+	CICLO DE CLOCK: 172
+Resultado pronto na unidade no. 33: 1026
+Emitindo instrucao 0x14423000 para estacao de reserva somadora no. 33
+Emitindo instrucao 0xc0000054 para estacao de reserva somadora no. 36
+	CICLO DE CLOCK: 173
+Resultado pronto na unidade no. 34: 1027
+Saltando para o endereco 0x54
+Buscando instrucao: 0xa0c100ac na posicao 0x54
+Buscando instrucao: 0x40000000 na posicao 0x58
+Buscando instrucao: 0x8620000 na posicao 0x5c
+Buscando instrucao: 0x88630004 na posicao 0x60
+	CICLO DE CLOCK: 174
+Decodificando instrucao 0xa0c100ac
+Decodificando instrucao 0x40000000
+Decodificando instrucao 0x8620000
+Decodificando instrucao 0x88630004
+Emitindo instrucao 0xa0c100ac para estacao de reserva somadora no. 34
+	CICLO DE CLOCK: 175
+Resultado pronto na unidade no. 35: -513
+	CICLO DE CLOCK: 176
+Saltando para o endereco 0xac
+Buscando instrucao: 0x0 na posicao 0xac
+Decodificando instrucao 0x0
+	CICLO DE CLOCK: 177
+Emitindo instrucao 0x0 para buffer de load no. 43
+	CICLO DE CLOCK: 178
+	CICLO DE CLOCK: 179
+Carregando valor 4113 a partir do endereco de memoria 0x1008
+Resultado pronto na unidade no. 43: 4113
+Resultado pronto na unidade no. 41: -1026
+	CICLO DE CLOCK: 180
+	CICLO DE CLOCK: 181
+Resultado pronto na unidade no. 33: 0
+
+========================
+ESTADO FINAL DA MEMORIA:
+========================
+
+0x00000000: 00000001 00000002 00000003 00000004 
+0x00000010: 00000005 00000006 00000007 00000008 
+0x00000020: 00000009 0000000a 0000000a 00000009 
+0x00000030: ffffffff 4000002c 00a00000 40c00000 
+0x00000040: 40000028 00200000 84210001 08410000 
+0x00000050: 8c420002 a0c100ac 40000000 08620000 
+0x00000060: 88630004 14001800 00800000 988500a4 
+0x00000070: a085008c 08220000 84420001 18423000 
+0x00000080: 8c420002 14423000 c0000054 08c20000 
+0x00000090: 80420001 18411000 8c420002 14423000 
+0x000000a0: c0000054 40000030 
+

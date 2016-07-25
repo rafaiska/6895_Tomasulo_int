@@ -52,7 +52,7 @@ void Atualizar_Unidade_Funcional(uint8_t clock_state, unidade_funcional_t *uf)
 			case DIVI_OPCODE:
 				if(uf->tempo >= XTIME_DIVI)
 				{
-					uf->resultado = uf->er->v1 * uf->er->v2;
+					uf->resultado = uf->er->v1 / uf->er->v2;
 					uf->estado = 2;	
 				}
 				break;
