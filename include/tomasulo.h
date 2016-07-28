@@ -46,6 +46,8 @@ typedef struct b_registrador_t
 //VARIAVEIS DE CLOCK
 uint8_t clock_state; //Valor 0 = baixa tensao, valor 1 = alta tensao
 uint32_t clock_count; //Conta pulsos de clock desde o inicio
+//MODULO DE CLOCK EM ASSEMBLY
+extern int _Atualiza_Clock_as();
 
 /*PONTEIROS DOS COMPONENTES
  *Os componentes sao alocados conforme as quantidades

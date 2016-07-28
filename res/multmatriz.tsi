@@ -1,0 +1,127 @@
+ARQUITETURA
+	somador = 6
+	multiplicador = 2
+	divisor = 2
+	busca_de_instrucoes = 4
+	buffer_de_carga = 2
+	buffer_de_escrita = 2
+CICLOS
+	ld = 4
+	st = 4
+	li = 1
+	move = 1
+	beq = 2
+	beqz = 2
+	bne = 2
+	bnez = 2
+	bgt = 2
+	bge = 2
+	bgtz = 2
+	blt = 2
+	ble = 2
+	blez = 2
+	b = 1
+	add = 2
+	addi = 2
+	sub = 2
+	subi = 2
+	mult = 4
+	multi = 4
+	div = 4
+	divi = 4
+	and = 2
+	andi = 2
+	or = 2
+	ori = 2
+	neg = 2
+	not = 2
+	sll = 3
+	slr = 3
+TEXTO
+.data
+	m1: .int 4
+	n1: .int 4
+	m2: .int 4
+	n2: .int 2
+	matriz1:
+	.int 1
+	.int 0
+	.int 0
+	.int 0
+	.int 0
+	.int 1
+	.int 0
+	.int 0
+	.int 0
+	.int 0
+	.int 1
+	.int 0
+	.int 0
+	.int 0
+	.int 0
+	.int 1
+	matriz2:
+	.int 1
+	.int 2
+	.int 3
+	.int 4
+	.int 5
+	.int 6
+	.int 7
+	.int 8
+	resultado:
+	.int 0
+	.int 0
+	.int 0
+	.int 0
+	.int 0
+	.int 0
+	.int 0
+	.int 0
+.text
+	li r2, 0
+	li r3, 0 
+calculaelemento:
+	li r4, 0
+	li r7, 0
+calculaloop:
+	li r0, n1
+	ld r1, r0
+	mult r1, r1, r2
+	add r1, r1, r4
+	multi r1, r1, 4
+	li r0, matriz1
+	add r0, r0, r1
+	ld r5, r0
+	li r0, n2
+	ld r1, r0
+	mult r1, r1, r4
+	add r1, r1, r3
+	multi r1, r1, 4
+	li r0, matriz2
+	add r0, r0, r1
+	ld r6, r0
+	mult r5, r5, r6
+	add r7, r7, r5
+	li r0, m1
+	ld r1, r0
+	addi r4, r4, 1
+	bne r1, r4, calculaloop
+	li r0, n2
+	ld r1, r0
+	mult r1, r1, r2
+	add r1, r1, r3
+	multi r1, r1, 4
+	li r0, resultado
+	add r0, r0, r1
+	st r7, r0
+proxelem:
+	li r0, m1
+	ld r1, r0
+	addi r2, r2, 1
+	bne r2, r1, calculaelemento
+	li r2, 0
+	li r0, n2
+	ld r1, r0
+	addi r3, r3, 1
+	bne r3, r1, calculaelemento
