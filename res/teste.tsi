@@ -1,10 +1,10 @@
 ARQUITETURA
-	somador = 1
-	multiplicador = 1
-	divisor = 1
-	busca_de_instrucoes = 1
-	buffer_de_carga = 1
-	buffer_de_escrita = 1
+	somador = 4
+	multiplicador = 2
+	divisor = 2
+	busca_de_instrucoes = 4
+	buffer_de_carga = 2
+	buffer_de_escrita = 2
 CICLOS
 	ld = 4
 	st = 4
@@ -39,18 +39,20 @@ CICLOS
 	slr = 3
 TEXTO
 .data
-	resposta: .int 0
-	testao: .int 4
+testao:
+	.int 0
+	.int 0
+	.int 0
+	.int 0
+	.int 0
 .text
 	li r0, testao
-	ld r1, r0
-	li r3, 10
-	li r2, 12
-loop:
-	add r1, r2, r1
-	subi r3, r3, 1
-	beqz r3, fim
-	b loop
-fim: 
-	li r0, resposta
-	st r1, r0
+	li r1, 5
+	li r2, 100
+	li r3, -20
+lupe:
+	st r2, r0
+	add r2, r2, r3
+	subi r1, r1, 1
+	addi r0, r0, 4
+	bnez r1, lupe

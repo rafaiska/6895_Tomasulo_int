@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 	while(tomasulo_exit == 0)
 	{
 		_Atualiza_Clock_as(); //FUNCAO ASSEMBLY x86_64 para atualizar o clock. Caso nao funcione, habilite a de baixo
+		printf("CICLO DE CLOCK %d:\n", clock_count);
 		//Atualiza_Clock(); //Altera o sinal de clock de um estado de alta para um de baixa tensao, ou vice-versa.
 		Atualiza_Componentes(); //Atualiza todos os componentes do pipeline.
 	}

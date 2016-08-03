@@ -51,7 +51,16 @@ int Decodificar_Instrucao(uint32_t codigo, instrucao_t *destino)
 				destino->operando2 = operandos & 0x1f0000;
 				for(i=0; i<16; ++i) //shift right 16 vezes
 					destino->operando2 /= 2;
-				destino->imediato = operandos & 0xffff;
+
+				imediato = operandos & 0x8000;
+				if(imediato != 0) //imediato eh numero negativo
+				{
+					imediato = operandos -1;
+					imediato = ~imediato;
+					destino->imediato = -(imediato & 0xffff);
+				}
+				else
+					destino->imediato = operandos & 0xffff;
 			break;
 
 			//FORMATO op R, I ; FORMATO op R, L
@@ -63,6 +72,15 @@ int Decodificar_Instrucao(uint32_t codigo, instrucao_t *destino)
 				destino->operando1 = operandos;
 				for(i=0; i<21; ++i) //shift right 21 vezes
 					destino->operando1 /= 2;
+
+				imediato = operandos & 0x100000;
+				if(imediato != 0) //imediato eh numero negativo
+				{
+					imediato = operandos -1;
+					imediato = ~imediato;
+					destino->imediato = -(imediato & 0x1fffff);
+				}
+				else
 				destino->imediato = operandos & 0x1fffff;
 			break;
 
@@ -220,7 +238,7 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 		{
 			//FORMATO op L
 			case B_OPCODE:
-				while(instrucao[i] != '\0')
+				while(instrucao[i] != '\0' && instrucao[i] != '\t' && instrucao[i] != ' ')
 				{
 					aux[j] = instrucao[i];
 					++j;
@@ -245,7 +263,7 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 			case BGE_OPCODE:
 			case BLT_OPCODE:
 			case BLE_OPCODE:
-				if(instrucao[i] != 'r')
+				if(instrucao[i] != 'r' && instrucao[i] != 'R')
 				{
 					printf("ERRO DE SINTAXE no primeiro operando de: %s\n", instrucao);
 					exit(1);
@@ -264,7 +282,7 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				j=0;
 				while(instrucao[i] == ' ' || instrucao[i] == '\t') ++i;
 
-				if(instrucao[i] != 'r')
+				if(instrucao[i] != 'r' && instrucao[i] != 'R')
 				{
 					printf("ERRO DE SINTAXE no segundo operando de: %s\n", instrucao);
 					exit(1);
@@ -283,7 +301,7 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				j=0;
 				while(instrucao[i] == ' ' || instrucao[i] == '\t') ++i;
 
-				while(instrucao[i] != '\0')
+				while(instrucao[i] != '\0' && instrucao[i] != '\t' && instrucao[i] != ' ')
 				{
 					aux[j] = instrucao[i];
 					++j;
@@ -291,10 +309,23 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				}
 				aux[j] = '\0';
 
-				if(aux[0] >= 48 && aux[0] <= 57)		//op3 eh um imediato
-					op3 = atoi(aux);
-				else						//op3 eh um label
+				if((aux[0] >= 48 && aux[0] <= 57) || aux[0] == '-')		//op3 eh um imediato
+				{
+					if(aux[0] == '-')
+					{
+						op3 = atoi(aux+1);
+						op3 *= -1;
+						op3 = op3 & 0xffff;
+					}
+					else
+					{
+						op3 = atoi(aux);
+					}
+				}
+				else								//op3 eh um label
+				{
 					op3 = Buscar_Rotulo(lista, aux);
+				}
 					
 
 				for(k=0; k<21; ++k)
@@ -312,7 +343,7 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 			case BNEZ_OPCODE:
 			case BGTZ_OPCODE:
 			case BLEZ_OPCODE:
-				if(instrucao[i] != 'r')
+				if(instrucao[i] != 'r' && instrucao[i] != 'R')
 				{
 					printf("ERRO DE SINTAXE no primeiro operando de: %s\n", instrucao);
 					exit(1);
@@ -331,7 +362,7 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				j=0;
 				while(instrucao[i] == ' ' || instrucao[i] == '\t') ++i;
 
-				while(instrucao[i] != '\0')
+				while(instrucao[i] != '\0' && instrucao[i] != '\t' && instrucao[i] != ' ')
 				{
 					aux[j] = instrucao[i];
 					++j;
@@ -339,11 +370,24 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				}
 				aux[j] = '\0';
 
-				if(aux[0] >= 48 && aux[0] <= 57)		//op2 eh um imediato
-					op2 = atoi(aux);
-				else						//op2 eh um label
+				if((aux[0] >= 48 && aux[0] <= 57) || aux[0] == '-')		//op2 eh um imediato
+				{
+					if(aux[0] == '-')
+					{
+						op2 = atoi(aux+1);
+						op2 *= -1;
+						op2 = op2 & 0x1fffff;
+					}
+					else
+					{
+						op2 = atoi(aux);
+					}
+				}
+				else								//op2 eh um label
+				{
 					op2 = Buscar_Rotulo(lista, aux);
-
+				}
+	
 				for(k=0; k<21; ++k)
 					op1 *= 2;
 
@@ -356,7 +400,7 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 			case MOVE_OPCODE:
 			case NEG_OPCODE:
 			case NOT_OPCODE:
-				if(instrucao[i] != 'r')
+				if(instrucao[i] != 'r' && instrucao[i] != 'R')
 				{
 					printf("ERRO DE SINTAXE no primeiro operando de: %s\n", instrucao);
 					exit(1);
@@ -375,7 +419,7 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				j=0;
 				while(instrucao[i] == ' ' || instrucao[i] == '\t') ++i;
 
-				if(instrucao[i] != 'r')
+				if(instrucao[i] != 'r' && instrucao[i] != 'R')
 				{
 					printf("ERRO DE SINTAXE no segundo operando de: %s\n", instrucao);
 					exit(1);
@@ -409,7 +453,7 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 			case OR_OPCODE:
 			case SLL_OPCODE:
 			case SLR_OPCODE:
-				if(instrucao[i] != 'r')
+				if(instrucao[i] != 'r' && instrucao[i] != 'R')
 				{
 					printf("ERRO DE SINTAXE no primeiro operando de: %s\n", instrucao);
 					exit(1);
@@ -428,7 +472,7 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				j=0;
 				while(instrucao[i] == ' ' || instrucao[i] == '\t') ++i;
 
-				if(instrucao[i] != 'r')
+				if(instrucao[i] != 'r' && instrucao[i] != 'R')
 				{
 					printf("ERRO DE SINTAXE no segundo operando de: %s\n", instrucao);
 					exit(1);
@@ -447,7 +491,7 @@ uint32_t Codificar_Instrucao(char *instrucao, lista_rotulo_t *lista)
 				j=0;
 				while(instrucao[i] == ' ' || instrucao[i] == '\t') ++i;
 
-				if(instrucao[i] != 'r')
+				if(instrucao[i] != 'r' && instrucao[i] != 'R')
 				{
 					printf("ERRO DE SINTAXE no terceiro operando de: %s\n", instrucao);
 					exit(1);

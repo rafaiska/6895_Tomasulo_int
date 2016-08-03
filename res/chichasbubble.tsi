@@ -1,0 +1,169 @@
+ARQUITETURA
+    somador = 10
+    multiplicador = 2
+    divisor = 3
+    busca_de_instrucoes = 4
+    buffer_de_carga = 5
+    buffer_de_escrita = 5
+CICLOS
+    ld = 2
+    st = 2
+    move = 2
+    neg = 2
+    not = 2
+    add = 2
+    sub = 2
+    mult = 2
+    div = 2
+    and = 2
+    or = 2
+    sll = 2
+    slr = 2
+    li = 2
+    beqz = 2
+    bnez = 2
+    bgtz = 2
+    blez = 2
+    addi = 2
+    subi = 2
+    multi = 2
+    divi = 2
+    andi = 2
+    ori = 2
+    beq = 2
+    bne = 2
+    bgt = 2
+    bge = 2
+    blt = 2
+    ble = 2
+    b = 2
+TEXTO
+.data
+vetor: .int 274
+    .int 160
+    .int 154
+    .int 374
+    .int 399
+    .int 152
+    .int 211
+    .int 138
+    .int 230
+    .int  190
+    .int  362
+    .int  116
+    .int  402
+    .int  347
+    .int  224
+    .int  97
+    .int  265
+    .int  40
+    .int  185
+    .int  338
+    .int  202
+    .int  31
+    .int  244
+    .int  432
+    .int  408
+    .int  42
+    .int  123
+    .int  342
+    .int  380
+    .int  438
+    .int  208
+    .int  397
+    .int  205
+    .int  354
+    .int  200
+    .int  52
+    .int  292
+    .int  46
+    .int  240
+    .int  126
+    .int 446
+    .int  294
+    .int  9
+    .int  87
+    .int  5
+    .int  178
+    .int  481
+    .int  44
+    .int  475
+    .int  482
+    .int  94
+    .int  70
+    .int  467
+    .int  104
+    .int  68
+    .int  464
+    .int  3
+    .int  277
+    .int  372
+    .int  298
+    .int  256
+    .int  133
+    .int  143
+    .int  284
+    .int  322
+    .int  192
+    .int  375
+    .int  276
+    .int  250
+    .int  85
+    .int  150
+    .int  430
+    .int  254
+    .int  169
+    .int  295
+    .int  2
+    .int  299
+    .int  204
+    .int  111
+    .int  460
+    .int  119
+    .int  355
+    .int  203
+    .int  226
+    .int  497
+    .int  122
+    .int  317
+    .int  210
+    .int  358
+    .int  196
+    .int  164
+    .int  113
+    .int  167
+    .int  305
+    .int  263
+    .int  286
+    .int  39
+    .int  413
+    .int  486
+    .int  47
+
+
+
+.text
+    li r31, 99
+
+inicioLoop:
+    move r30, r31
+    li r0, vetor
+    subi r0, r0, 4
+
+avanca:
+    addi r0, r0, 4
+    ld r1, r0
+    addi r2, r0, 4
+    ld r3, r2
+    bgt r1, r3, troca
+	b rtroca
+
+troca:
+    st r1, r2
+    st r3, r0
+
+rtroca:
+    subi r30, r30, 1
+    bnez r30, avanca
+    subi r31, r31, 1
+    bnez r31, inicioLoop
